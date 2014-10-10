@@ -53,4 +53,18 @@ class cdh::hadoop::namenode {
         alias      => 'namenode',
         require    => Exec['hadoop-namenode-format'],
     }
+
+    if ($::cdh::hadoop::ha_enabled and $::cdh::hadoop::ha_autofailover_enabled and $::cdh::hadoop::zookeeper_hosts) {
+        package { 'hadoop-hdfs-zkfc':
+            ensure => 'installed'
+        }
+        service { 'hadoop-hdfs-zkfc':
+            ensure     => 'running',
+            enable     => true,
+            hasstatus  => true,
+            hasrestart => true,
+            alias      => 'zkfc',
+            require    => Package['hadoop-hdfs-zkfc']
+        }
+    }
 }

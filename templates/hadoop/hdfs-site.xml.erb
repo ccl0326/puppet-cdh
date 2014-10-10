@@ -67,6 +67,18 @@ end
     <value>shell(/bin/true)</value>
   </property>
 
+<% if @ha_autofailover_enabled and @zookeeper_hosts and !@zookeeper_hosts.empty? -%>
+  <property>
+    <name>dfs.ha.automatic-failover.enabled</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>ha.zookeeper.quorum</name>
+    <value><%= @zookeeper_hosts.sort.join(',') %></value>
+  </property>
+
+<% end # if @ha_autofailover_enabled -%>
 <% end # if @ha_enabled -%>
   <property>
    <name>dfs.namenode.name.dir</name>

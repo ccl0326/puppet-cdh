@@ -2,7 +2,8 @@
 # Default parameters for cdh::hadoop configuration.
 #
 class cdh::hadoop::defaults {
-    $cluster_name = 'cdh'
+    $cluster_name                             = 'cdh'
+    $nameservice_id                           = 'cdh-cluster'
     $journalnode_hosts                        = undef
     $dfs_journalnode_edits_dir                = undef
 
@@ -54,9 +55,12 @@ class cdh::hadoop::defaults {
     $gelf_logging_port                        = 12201
 
     # JMX Ports (These are not currently configurable)
-    $namenode_jmxremote_port           = 9980
-    $datanode_jmxremote_port           = 9981
-    $resourcemanager_jmxremote_port    = 9983
-    $nodemanager_jmxremote_port        = 9984
-    $proxyserver_jmxremote_port        = 9985
+    $namenode_jmxremote_port                  = 9980
+    $datanode_jmxremote_port                  = 9981
+    $resourcemanager_jmxremote_port           = 9983
+    $nodemanager_jmxremote_port               = 9984
+    $proxyserver_jmxremote_port               = 9985
+
+    $ha_autofailover_enabled                  = true
+    $zookeeper_hosts                          = undef
 }

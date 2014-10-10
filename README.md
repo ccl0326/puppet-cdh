@@ -21,7 +21,7 @@ that:
 
 - In general, services managed by this module do not subscribe to their relevant
   config files.  This prevents accidental deployments of config changes.  If you
-  make config changes in puppet, you must apply puppet and then manually restart
+  make config changes in Puppet, you must apply Puppet and then manually restart
   the relevant services.
 - This module has only been tested using CDH 5.0.1 on Ubuntu Precise 12.04.2 LTS
 - Zookeeper is not puppetized in this module, as Debian/Ubuntu provides
@@ -31,16 +31,11 @@ that:
 
 # Installation
 
-Clone (or copy) this repository into your puppet modules/cdh directory:
-```bash
-git clone git://github.com/wikimedia/puppet-cdh.git modules/cdh
-```
+Update your `Puppetfile`:
 
-Or you could also use a git submodule:
-```bash
-git submodule add git://github.com/wikimedia/puppet-cdh.git modules/cdh
-git commit -m 'Adding modules/cdh as a git submodule.'
-git submodule init && git submodule update
+```
+mod "cdh",
+  :git => "https://github.com/wikimedia/puppet-cdh.git"
 ```
 
 # Hadoop
@@ -51,24 +46,24 @@ All Hadoop enabled nodes should include the ```cdh::hadoop``` class.
 
 ```puppet
 class my::hadoop {
-    class { 'cdh::hadoop':
-        # Logical Hadoop cluster name.
-        cluster_name       => 'mycluster',
-        # Must pass an array of hosts here, even if you are
-        # not using HA and only have a single NameNode.
-        namenode_hosts     => ['namenode1.domain.org'],
-        datanode_mounts    => [
-            '/var/lib/hadoop/data/a',
-            '/var/lib/hadoop/data/b',
-            '/var/lib/hadoop/data/c'
-        ],
-        # You can also provide an array of dfs_name_dirs.
-        dfs_name_dir       => '/var/lib/hadoop/name',
-    }
+  class { 'cdh::hadoop':
+    # Logical Hadoop cluster name.
+    cluster_name    => 'mycluster',
+    # Must pass an array of hosts here, even if you are
+    # not using HA and only have a single NameNode.
+    namenode_hosts  => ['namenode1.domain.org'],
+    datanode_mounts => [
+      '/var/lib/hadoop/data/a',
+      '/var/lib/hadoop/data/b',
+      '/var/lib/hadoop/data/c'
+    ],
+    # You can also provide an array of dfs_name_dirs.
+    dfs_name_dir    => '/var/lib/hadoop/name'
+  }
 }
 
 node 'hadoop-client.domain.org' {
-    include my::hadoop
+  include my::hadoop
 }
 ```
 
@@ -83,11 +78,11 @@ points provided.
 
 ```puppet
 class my::hadoop::master inherits my::hadoop {
-    include cdh::hadoop::master
+  include cdh::hadoop::master
 }
 
 node 'namenode1.domain.org' {
-    include my::hadoop::master
+  include my::hadoop::master
 }
 ```
 
@@ -99,11 +94,11 @@ and set up the JobTracker.
 
 ```puppet
 class my::hadoop::worker inherits my::hadoop {
-    include cdh::hadoop::worker
+  include cdh::hadoop::worker
 }
 
 node 'datanode[1234].domain.org' {
-    include my::hadoop::worker
+  include my::hadoop::worker
 }
 ```
 
@@ -116,7 +111,7 @@ TaskTracker.
 For detailed documentation, see the
 [CDH5 High Availability Guide](http://www.cloudera.com/content/cloudera-content/cloudera-docs/CDH5/latest/CDH5-High-Availability-Guide/cdh5hag_hdfs_ha_config.html).
 
-This puppet module only supports Quorum-based HA storage using JournalNodes.
+This Puppet module only supports Quorum-based HA storage using JournalNodes.
 It does not support NFS based HA.
 
 Your JournalNodes will be automatically configured based on the value of
@@ -140,28 +135,29 @@ your hadoop nodes, as well as specify the hosts of your standby NameNodes.
 ```puppet
 
 class my::hadoop {
-    class { 'cdh::hadoop':
-        cluster_name        => 'mycluster',
-        namenode_hosts      => [
-            'namenode1.domain.org',
-            'namenode2.domain.org
-        ],
-        journalnode_hosts   => [
-            'datanode1.domain.org',
-            'datanode2.domain.org',
-            'datanode3.domain.org'
-        ],
-        datanode_mounts    => [
-            '/var/lib/hadoop/data/a',
-            '/var/lib/hadoop/data/b',
-            '/var/lib/hadoop/data/c'
-        ],
-        dfs_name_dir       => ['/var/lib/hadoop/name', '/mnt/hadoop_name'],
-    }
+  class { 'cdh::hadoop':
+    cluster_name      => 'mycluster',
+    nameservice_id    => 'mycluster',
+    namenode_hosts    => [
+      'namenode1.domain.org',
+      'namenode2.domain.org
+    ],
+    journalnode_hosts => [
+      'datanode1.domain.org',
+      'datanode2.domain.org',
+      'datanode3.domain.org'
+    ],
+    datanode_mounts   => [
+      '/var/lib/hadoop/data/a',
+      '/var/lib/hadoop/data/b',
+      '/var/lib/hadoop/data/c'
+    ],
+    dfs_name_dir      => ['/var/lib/hadoop/name', '/mnt/hadoop_name']
+  }
 }
 
 node 'hadoop-client.domain.org' {
-    include my::hadoop
+  include my::hadoop
 }
 ```
 
@@ -176,18 +172,18 @@ include ```cdh::hadoop::namenode::standby```:
 
 ``` puppet
 class my::hadoop::master inherits my::hadoop {
-    include cdh::hadoop::master
+  include cdh::hadoop::master
 }
 class my::hadoop::standby inherits my::hadoop {
-    include cdh::hadoop::namenode::standby
+  include cdh::hadoop::namenode::standby
 }
 
 node 'namenode1.domain.org' {
-    include my::hadoop::master
+  include my::hadoop::master
 }
 
 node 'namenode2.domain.org' {
-    include my::hadoop::standby
+  include my::hadoop::standby
 }
 ```
 
@@ -195,22 +191,21 @@ Including ```cdh::hadoop::namenode::standby``` will bootstrap the standby
 NameNode from the primary NameNode and start the standby NameNode service.
 
 When are setting up brand new Hadoop cluster with HA, you should apply your
-puppet manifests to nodes in this order:
+Puppet manifests to nodes in this order:
 
 1. JournalNodes
 2. Primary Hadoop master node (active NameNode)
-3. StandBy NameNodes
+3. Standby NameNodes
 4. Worker nodes (DataNodes)
 
 ### Adding High Availability to a running cluster
 
 Go through all of the same steps as described in the above section.  Once all
-of your puppet manifests have been applied (JournalNodes running, NameNodes running and
+of your Puppet manifests have been applied (JournalNodes running, NameNodes running and
 formatted/bootstrapped, etc.) you can initialize your
 JournalNodes' shared edit directories.
 
 ```bash
-
 # Shutdown your HDFS cluster.  Everything will need a
 # restart on order to load the newly applied HA configs.
 # (Leave the JournalNodes running.)
@@ -229,10 +224,14 @@ sudo service hadoop-yarn-nodemanager stop
 # initialize the JournalNodes' shared edit directories:
 sudo -u hdfs /usr/bin/hdfs namenode -initializeSharedEdits
 
+# initialize the HA state in ZooKeeper
+sudo -u hdfs /usr/bin/hdfs zkfs -formatZK
+
 # Now restart your Hadoop master services
 
 # On your hadoop master node:
 sudo service hadoop-hdfs-namenode start
+sudo service hadoop-hdfs-zkfc start
 sudo service hadoop-yarn-resourcemanager start
 
 # Now that your primary NameNode is back up, and
@@ -240,23 +239,12 @@ sudo service hadoop-yarn-resourcemanager start
 # your Standby NameNode(s).  Run this command
 # on your standby NameNode(s):
 sudo -u hdfs /usr/bin/hdfs namenode -bootstrapStandby
+sudo service hadoop-hdfs-zkfc start
 
 # On your hadoop worker nodes:
 sudo service hadoop-yarn-nodemanager start
 sudo service hadoop-hdfs-datanode start
 ```
-
-When there are multiple NameNodes and automatic failover is not configured
-(it is not yet supported by this puppet module), both NameNodes start up
-in standby mode.  You will have to manually transition one of them to active.
-
-```bash
-# on your hadoop master node:
-sudo -u hdfs /usr/bin/hdfs haadmin -transitionToActive <namenode_id>
-```
-
-```<namenode_id>``` will be the first entry in the ```$namenode_hosts``` array,
-with dot ('.') characters replaced with dashes ('-').  E.g.  ```namenode1-domain-org```.
 
 
 # Hive
@@ -267,7 +255,7 @@ with dot ('.') characters replaced with dashes ('-').  E.g.  ```namenode1-domain
 class { 'cdh::hive':
   metastore_host  => 'hive-metastore-node.domain.org',
   zookeeper_hosts => ['zk1.domain.org', 'zk2.domain.org'],
-  jdbc_password   => $secret_password,
+  jdbc_password   => $secret_password
 }
 ```
 
@@ -319,8 +307,8 @@ To install hue server, simply:
 
 ```puppet
 class { 'cdh::hue':
-    secret_key       => 'ii7nnoCGtP0wjub6nqnRfQx93YUV3iWG', # your secret key here.
-    hive_server_host => 'hive.example.com',
+  secret_key       => 'ii7nnoCGtP0wjub6nqnRfQx93YUV3iWG',  # your secret key here.
+  hive_server_host => 'hive.example.com'
 }
 ```
 

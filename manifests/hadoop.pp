@@ -19,9 +19,10 @@
 #                                 configuring Hadoop with HA NameNodes.
 #   $dfs_name_dir               - Path to hadoop NameNode name directory.  This
 #                                 can be an array of paths or a single string path.
-#   $cluster_name               - Arbitrary logical HDFS cluster name.  This will be used
-#                                 as the nameserivce id if you set $ha_enabled to true.
+#   $cluster_name               - Arbitrary logical HDFS cluster name.
 #                                 Default: 'cdh'.
+#   $nameservice_id             - Arbitrary logical HDFS nameservice ID.
+#                                 Default: 'cdh-cluster'.
 #   $journalnode_hosts          - Array of JournalNode hosts.  If this is provided,
 #                                 Hadoop will be configured to expect to have
 #                                 a primary NameNode as well as at least
@@ -88,11 +89,14 @@
 #   $fair_scheduler_template                  - The fair-scheduler.xml queue configuration template.
 #                                               If you set this to false or undef, FairScheduler will
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
+#   $ha_autofailover_enabled                  - If enable HA automatic failover. Default: true.
+#   $zookeeper_hosts                          - Array of ZooKeeper hostname/IP(:port)s. Default: undef.
 #
 class cdh::hadoop(
     $namenode_hosts,
     $dfs_name_dir,
     $cluster_name                                = $::cdh::hadoop::defaults::cluster_name,
+    $nameservice_id                              = $::cdh::hadoop::defaults::nameservice_id,
     $journalnode_hosts                           = $::cdh::hadoop::defaults::journalnode_hosts,
     $dfs_journalnode_edits_dir                   = $::cdh::hadoop::defaults::dfs_journalnode_edits_dir,
 
@@ -136,6 +140,8 @@ class cdh::hadoop(
     $gelf_logging_host                           = $::cdh::hadoop::defaults::gelf_logging_host,
     $gelf_logging_port                           = $::cdh::hadoop::defaults::gelf_logging_port,
     $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
+    $ha_autofailover_enabled                     = $::cdh::hadoop::defaults::ha_autofailover_enabled,
+    $zookeeper_hosts                             = $::cdh::hadoop::defaults::zookeeper_hosts,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the
@@ -151,9 +157,8 @@ class cdh::hadoop(
         default => true,
     }
 
-    # If $ha_enabled is true, use $cluster_name as $nameservice_id.
     $nameservice_id = $ha_enabled ? {
-        true    => $cluster_name,
+        true    => $nameservice_id,
         default => undef,
     }
 
@@ -164,6 +169,9 @@ class cdh::hadoop(
     # Parameter Validation:
     if ($ha_enabled and !$journalnode_hosts) {
         fail('Must provide multiple $journalnode_hosts when using HA and setting $nameservice_id.')
+    }
+    if ($ha_enabled and $ha_autofailover_enabled and !$zookeeper_hosts) {
+        fail('Must provide multiple $zookeeper_hosts when enable HA automatic failover.')
     }
 
     # Assume the primary namenode is the first entry in $namenode_hosts,

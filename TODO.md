@@ -10,7 +10,6 @@
 - Make log4j.properties more configurable.
 - Make JMX ports configurable.
 - Make hadoop-metrics2.properties more configurable.
-- Support HA automatic failover.
 - HA NameNode Fencing support.
 
 ## Zookeeper
