@@ -24,8 +24,8 @@ that:
   make config changes in Puppet, you must apply Puppet and then manually restart
   the relevant services.
 - This module has only been tested using CDH 5.0.1 on Ubuntu Precise 12.04.2 LTS
-- Zookeeper is not puppetized in this module, as Debian/Ubuntu provides
-  a different and suitable Zookeeper package.  To puppetize Zookeeper Servers,
+- ZooKeeper is not puppetized in this module, as Debian/Ubuntu provides
+  a different and suitable ZooKeeper package.  To puppetize ZooKeeper Servers,
   See the [puppet-zookeeper](https://github.com/wikimedia/puppet-zookeeper) module.
 
 
