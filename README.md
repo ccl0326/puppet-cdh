@@ -274,7 +274,7 @@ database, set the ```metastore_database``` parameter to undef:
 
 ```puppet
 class { 'cdh::hive::master':
-  metastore_database => undef,
+  metastore_database => undef
 }
 ```
 
@@ -296,7 +296,7 @@ Oozie database manually.
 
 ```puppet
 class { 'cdh::oozie::server':
-  jdbc_password -> $secret_password
+  jdbc_password => $secret_password
 }
 ```
 
