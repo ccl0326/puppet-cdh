@@ -295,8 +295,8 @@ automatically installable backend database.  Alternatively, you may set
 Oozie database manually.
 
 ```puppet
-class { 'cdh::oozie::server:
-  jdbc_password -> $secret_password,
+class { 'cdh::oozie::server':
+  jdbc_password -> $secret_password
 }
 ```
 
