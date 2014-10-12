@@ -34,7 +34,7 @@ that:
 Update your `Puppetfile`:
 
 ```
-mod "cdh",
+mod "wikimedia/cdh",
   :git => "https://github.com/wikimedia/puppet-cdh.git"
 ```
 
