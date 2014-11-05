@@ -328,5 +328,36 @@ There are many more parameters to the ```cdh::hue``` class.  See the class
 documentation in manifests/hue.pp.
 
 
+# HBase
+
+Install HBase Master:
+
+```puppet
+class { 'cdh::hbase':
+  namenode_host   => 'namenode.domain.org',
+  zookeeper_hosts => [
+    'zk1.domain.org',
+    'zk2.domain.org',
+    'zk3.domain.org'
+  ]
+}
+include cdh::hbase::master
+```
+
+Install HBase RegionServer and Thrift server (typically on all of the slave nodes in a cluster):
+
+```puppet
+class { 'cdh::hbase':
+  namenode_host   => 'namenode.domain.org',
+  zookeeper_hosts => [
+    'zk1.domain.org',
+    'zk2.domain.org',
+    'zk3.domain.org'
+  ]
+}
+include cdh::hbase::slave
+```
+
+
 If you include ```cdh::hive``` or ```cdh::oozie``` classes on this node,
 Hue will be configured to run its Hive and Oozie apps.
