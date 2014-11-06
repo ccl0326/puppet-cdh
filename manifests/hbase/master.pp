@@ -21,8 +21,9 @@ class cdh::hbase::master() {
   }
   service { 'hbase-master':
     ensure     => 'running',
-    require    => [Package['hbase-master'], Cdh::Hadoop::Directory['/hbase']],
+    enable     => true,
     hasrestart => true,
-    hasstatus  => true
+    hasstatus  => true,
+    require    => [Package['hbase-master'], Cdh::Hadoop::Directory['/hbase']]
   }
 }

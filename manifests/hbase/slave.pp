@@ -15,9 +15,10 @@ class cdh::hbase::slave() {
   }
   service { 'hbase-regionserver':
     ensure     => 'running',
-    require    => Package['hbase-regionserver'],
+    enable     => true,
     hasrestart => true,
-    hasstatus  => true
+    hasstatus  => true,
+    require    => Package['hbase-regionserver']
   }
 
   package { 'hbase-thrift':
