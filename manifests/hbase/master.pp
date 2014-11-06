@@ -16,8 +16,7 @@ class cdh::hbase::master() {
   # sudo -u hdfs hdfs dfs -mkdir /hbase
   # sudo -u hdfs hdfs dfs -chown hbase /hbase
   cdh::hadoop::directory { '/hbase':
-    owner => 'hbase',
-    group => 'hbase'
+    owner => 'hbase'
   }
   service { 'hbase-master':
     ensure     => 'running',

@@ -16,6 +16,18 @@
 # [*hbase_site_template*]
 #   hbase-site.xml template path
 #
+# [*hadoop_metrics2_hbase_template*]
+#   hadoop-metrics2-hbase.properties template path
+#
+# [*hbase_env_template*]
+#   hbase-env.sh template path
+#
+# [*hbase_policy_template*]
+#   hbase-policy.xml template path
+#
+# [*log4j_template*]
+#   log4j.properties template path
+#
 # === Examples
 #
 #  class { 'cdh::hbase':
@@ -29,8 +41,12 @@
 #
 class cdh::hbase(
   $namenode_host,
-  $zookeeper_hosts     = $cdh::hbase::defaults::zookeeper_hosts,
-  $hbase_site_template = $cdh::hbase::defaults::hbase_site_template
+  $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
+  $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
+  $hadoop_metrics2_hbase_template = $cdh::hbase::defaults::hadoop_metrics2_hbase_template,
+  $hbase_env_template             = $cdh::hbase::defaults::hbase_env_template,
+  $hbase_policy_template          = $cdh::hbase::defaults::hbase_policy_template,
+  $log4j_template                 = $cdh::hbase::defaults::log4j_template
 ) inherits cdh::hbase::defaults {
   Class['cdh::hadoop'] -> Class['cdh::hbase']
 
@@ -52,6 +68,30 @@ class cdh::hbase(
 
   file { "${config_directory}/hbase-site.xml":
     content => template($hbase_site_template),
+    owner   => 'hbase',
+    group   => 'hbase',
+    require => [Package['hbase'], File[$config_directory]]
+  }
+  file { "${config_directory}/hadoop-metrics2-hbase.properties":
+    content => template($hadoop_metrics2_hbase_template),
+    owner   => 'hbase',
+    group   => 'hbase',
+    require => [Package['hbase'], File[$config_directory]]
+  }
+  file { "${config_directory}/hbase-env.sh":
+    content => template($hbase_env_template),
+    owner   => 'hbase',
+    group   => 'hbase',
+    require => [Package['hbase'], File[$config_directory]]
+  }
+  file { "${config_directory}/hbase-policy.xml":
+    content => template($hbase_policy_template),
+    owner   => 'hbase',
+    group   => 'hbase',
+    require => [Package['hbase'], File[$config_directory]]
+  }
+  file { "${config_directory}/log4j.properties":
+    content => template($log4j_template),
     owner   => 'hbase',
     group   => 'hbase',
     require => [Package['hbase'], File[$config_directory]]
