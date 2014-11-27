@@ -80,6 +80,13 @@ end
   </property>
 <% end -%>
 
+<% if @balance_speed -%>
+  <property> 
+  <name>dfs.balance.bandwidthPerSec</name> 
+  <value><%= @balance_speed %></value>
+  </property>
+<% end -%>
+
   <property>
    <!--
     Deprecated in CDH5. Replaced by dfs.blocksize.

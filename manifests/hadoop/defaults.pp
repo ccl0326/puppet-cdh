@@ -16,6 +16,7 @@ class cdh::hadoop::defaults {
     $httpfs_enabled                           = true
     $mapreduce_system_dir                     = undef
     $io_file_buffer_size                      = undef
+    $balance_speed                            = undef
 
     $mapreduce_map_tasks_maximum              = undef
     $mapreduce_reduce_tasks_maximum           = undef

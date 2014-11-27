@@ -106,6 +106,7 @@ class cdh::hadoop(
     $webhdfs_enabled                             = $::cdh::hadoop::defaults::webhdfs_enabled,
     $httpfs_enabled                              = $::cdh::hadoop::defaults::httpfs_enabled,
     $io_file_buffer_size                         = $::cdh::hadoop::defaults::io_file_buffer_size,
+    $balance_speed                               = $::cdh::hadoop::defaults::balance_speed,
     $mapreduce_system_dir                        = $::cdh::hadoop::defaults::mapreduce_system_dir,
     $mapreduce_map_tasks_maximum                 = $::cdh::hadoop::defaults::mapreduce_map_tasks_maximum,
     $mapreduce_reduce_tasks_maximum              = $::cdh::hadoop::defaults::mapreduce_reduce_tasks_maximum,
