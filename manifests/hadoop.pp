@@ -121,6 +121,7 @@ class cdh::hadoop(
     $mapreduce_map_java_opts                     = $::cdh::hadoop::defaults::mapreduce_map_java_opts,
     $mapreduce_reduce_java_opts                  = $::cdh::hadoop::defaults::mapreduce_reduce_java_opts,
     $mapreduce_shuffle_port                      = $::cdh::hadoop::defaults::mapreduce_shuffle_port,
+    $mapreduce_shuffle_memory_limit_percent      = $::cdh::hadoop::defaults::mapreduce_shuffle_memory_limit_percent,
     $mapreduce_intermediate_compression          = $::cdh::hadoop::defaults::mapreduce_intermediate_compression,
     $mapreduce_intermediate_compression_codec    = $::cdh::hadoop::defaults::mapreduce_intermediate_compression_codec,
     $mapreduce_output_compression                = $::cdh::hadoop::defaults::mapreduce_output_compession,

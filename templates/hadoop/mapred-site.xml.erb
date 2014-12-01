@@ -37,6 +37,13 @@
     <value><%= @mapreduce_shuffle_port %></value>
   </property>
 
+<% if @mapreduce_shuffle_memory_limit_percent -%>
+  <property>
+    <name>mapreduce.reduce.shuffle.memory.limit.percent</name>
+    <value><%= @mapreduce_shuffle_memory_limit_percent %></value>
+  </property>
+<% end -%>
+
 <% end -%>
   <property>
     <name>mapred.job.tracker</name>

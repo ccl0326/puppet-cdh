@@ -33,6 +33,7 @@ class cdh::hadoop::defaults {
     $yarn_app_mapreduce_am_command_opts       = undef
 
     $mapreduce_shuffle_port                   = undef
+    $mapreduce_shuffle_memory_limit_percent   = undef
     $mapreduce_intermediate_compression       = false
     $mapreduce_intermediate_compression_codec = 'org.apache.hadoop.io.compress.DefaultCodec'
     $mapreduce_output_compression             = false
