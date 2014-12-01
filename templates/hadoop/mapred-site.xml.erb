@@ -36,6 +36,7 @@
     <name>mapreduce.shuffle.port</name>
     <value><%= @mapreduce_shuffle_port %></value>
   </property>
+<% end -%>
 
 <% if @mapreduce_shuffle_memory_limit_percent -%>
   <property>
@@ -44,7 +45,6 @@
   </property>
 <% end -%>
 
-<% end -%>
   <property>
     <name>mapred.job.tracker</name>
      <!-- Hue gets confused if mapred.job.tracker is not set,
