@@ -36,3 +36,14 @@ export HADOOP_ROOT_SECURITY_LOGGER=INFO,DRFAS,gelf
 # Hadoop daemons (NameNode, DataNode) will use this many MB for JVM Heap
 HADOOP_HEAPSIZE=<%= @hadoop_heapsize %>
 <% end -%>
+
+
+<% if @hadoop_classpath -%>
+export HADOOP_CLASSPATH=<%= @hadoop_classpath %>:$HADOOP_CLASSPATH
+<% end -%>
+<% if @java_library_path -%>
+export JAVA_LIBRARY_PATH=<%= @java_library_path %>
+<% end -%>
+
+
+

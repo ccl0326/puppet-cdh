@@ -55,6 +55,9 @@ class cdh::hadoop::defaults {
     $gelf_logging_host                        = 'localhost'
     $gelf_logging_port                        = 12201
 
+    $hadoop_classpath                         = undef
+    $java_library_path                        = undef
+
     # JMX Ports (These are not currently configurable)
     $namenode_jmxremote_port           = 9980
     $datanode_jmxremote_port           = 9981

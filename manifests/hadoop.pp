@@ -138,6 +138,8 @@ class cdh::hadoop(
     $gelf_logging_host                           = $::cdh::hadoop::defaults::gelf_logging_host,
     $gelf_logging_port                           = $::cdh::hadoop::defaults::gelf_logging_port,
     $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
+    $hadoop_classpath                            = $::cdh::hadoop::defaults::hadoop_classpath,
+    $java_library_path                           = $::cdh::hadoop::defaults::java_library_path,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the
