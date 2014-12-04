@@ -140,6 +140,9 @@ class cdh::hadoop(
     $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
     $hadoop_classpath                            = $::cdh::hadoop::defaults::hadoop_classpath,
     $java_library_path                           = $::cdh::hadoop::defaults::java_library_path,
+    $lzo_enable                                  = $::cdh::hadoop::defaults::lzo_enable,
+    $io_compression_codec_lzo_class              = $::cdh::hadoop::defaults::io_compression_codec_lzo_class,
+    $io_compression_codecs                       = $::cdh::hadoop::defaults::io_compression_codecs,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the

@@ -58,6 +58,12 @@ class cdh::hadoop::defaults {
     $hadoop_classpath                         = undef
     $java_library_path                        = undef
 
+    $lzo_enable                               = flase
+    $io_compression_codec_lzo_class           = 'com.hadoop.compression.lzo.LzoCodec'
+    $io_compression_codecs                    = ['org.apache.hadoop.io.compress.DefaultCodec',
+                                                 'org.apache.hadoop.io.compress.GzipCodec',
+                                                 'org.apache.hadoop.io.compress.BZip2Codec']
+
     # JMX Ports (These are not currently configurable)
     $namenode_jmxremote_port           = 9980
     $datanode_jmxremote_port           = 9981

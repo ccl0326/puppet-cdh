@@ -70,4 +70,22 @@
   </property>
 <% end -%>
 
+
+<% if @lzo_enable -%>
+  <property>
+    <name>io.compression.codec.lzo.class</name>
+    <value><%= @io_compression_codec_lzo_class %></value>
+  </property>
+
+  <property>
+    <name>io.compression.codecs</name>
+    <value>
+    <% @io_compression_codecs.each do |codec| -%>
+        <%= codec %>,
+    <% end #io_compression_codecs.each -%>
+    </value>
+  </property>
+<% end -%>
+
+
 </configuration>
