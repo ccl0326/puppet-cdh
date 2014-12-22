@@ -88,6 +88,8 @@
 #   $fair_scheduler_template                  - The fair-scheduler.xml queue configuration template.
 #                                               If you set this to false or undef, FairScheduler will
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
+#   $fair_user_as_default_queue               - Whether to use the username associated with the
+#                                               allocation as the default queue name
 #
 class cdh::hadoop(
     $namenode_hosts,
@@ -136,6 +138,7 @@ class cdh::hadoop(
     $gelf_logging_host                           = $::cdh::hadoop::defaults::gelf_logging_host,
     $gelf_logging_port                           = $::cdh::hadoop::defaults::gelf_logging_port,
     $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
+    $fair_user_as_default_queue                  = $::cdh::hadoop::defaults::fair_user_as_default_queue,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the
