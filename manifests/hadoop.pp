@@ -52,6 +52,8 @@
 #   $yarn_app_mapreduce_am_resource_mb        - The amount of memory the MR AppMaster needs.
 #   $yarn_app_mapreduce_am_command_opts       - Java opts for the MR App Master processes. The following symbol, if
 #                                              present, will be interpolated: @taskid@ is replaced by current TaskID
+#   $mapreduce_shuffle_memory_limit_percent   - Maximum percentage of the in-memory limit that a single shuffle can
+#                                              consume, Default: 0.25.
 #   $mapreduce_shuffle_port
 #   $mapreduce_intermediate_compression       - If true, intermediate MapReduce data
 #                                               will be compressed.  Default: true.
