@@ -89,7 +89,7 @@
 #                                               If you set this to false or undef, FairScheduler will
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
 #   $fair_user_as_default_queue               - Whether to use the username associated with the
-#                                               allocation as the default queue name
+#                                               allocation as the default queue name. Default: false
 #
 class cdh::hadoop(
     $namenode_hosts,
