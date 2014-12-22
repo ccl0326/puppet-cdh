@@ -40,6 +40,7 @@ class cdh::hadoop::defaults {
     $mapreduce_output_compression_codec       = 'org.apache.hadoop.io.compress.DefaultCodec'
     $mapreduce_output_compression_type        = 'RECORD'
 
+    $yarn_nodemanager_resource_cpu_vcores     = undef
     $yarn_nodemanager_resource_memory_mb      = undef
     $yarn_scheduler_minimum_allocation_mb     = undef
     $yarn_scheduler_maximum_allocation_mb     = undef
