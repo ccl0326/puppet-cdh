@@ -133,6 +133,7 @@ class cdh::hadoop(
     $mapreduce_output_compression                = $::cdh::hadoop::defaults::mapreduce_output_compession,
     $mapreduce_output_compression_codec          = $::cdh::hadoop::defaults::mapreduce_output_compession_codec,
     $mapreduce_output_compression_type           = $::cdh::hadoop::defaults::mapreduce_output_compression_type,
+    $yarn_nodemanager_resource_recovery_enabled  = $::cdh::hadoop::defaults::yarn_nodemanager_resource_recovery_enabled,
     $yarn_nodemanager_resource_cpu_vcores        = $::cdh::hadoop::defaults::yarn_nodemanager_resource_cpu_vcores,
     $yarn_nodemanager_resource_memory_mb         = $::cdh::hadoop::defaults::yarn_nodemanager_resource_memory_mb,
     $yarn_scheduler_minimum_allocation_mb        = $::cdh::hadoop::defaults::yarn_scheduler_minimum_allocation_mb,
