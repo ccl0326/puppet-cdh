@@ -36,6 +36,7 @@
 #   $yarn_local_path            - Path relative to JBOD mount point for yarn local directories.
 #   $yarn_logs_path             - Path relative to JBOD mount point for yarn log directories.
 #   $dfs_block_size             - HDFS block size in bytes.  Default 64MB.
+#   $balance_speed              - HDFS balance band width Per Sec, type: byte.
 #   $io_file_buffer_size
 #   $map_tasks_maximum
 #   $reduce_tasks_maximum
@@ -89,11 +90,11 @@
 #   $fair_scheduler_template                  - The fair-scheduler.xml queue configuration template.
 #                                               If you set this to false or undef, FairScheduler will
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
-#   $hadoop_classpath                         - Add library in HADOOP_CLASSPATH with hadoop-env.sh 
-#   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh
-#   $lzo_enabled                              - Set true when you add lzo compress (https://github.com/twitter/hadoop-lzo)
-#   $io_compression_codec_lzo_class
-#   $io_compression_codecs
+#   $hadoop_classpath                         - Add library in HADOOP_CLASSPATH with hadoop-env.sh .
+#   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh .
+#   $lzo_enabled                              - Set true when you add lzo compress (https://github.com/twitter/hadoop-lzo).
+#   $io_compression_codec_lzo_class           - Write lzo class name (e.g. com.hadoop.compression.lzo.LzoCodec).
+#   $io_compression_codecs                    - Choose a codec when map outputs are compressed.
 #
 class cdh::hadoop(
     $namenode_hosts,

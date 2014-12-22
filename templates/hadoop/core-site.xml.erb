@@ -65,8 +65,8 @@
 <% if @net_topology_script_template -%>
   <!-- Script used to map nodes to rack or rows in datacenter. -->
   <property>
-      <name>net.topology.script.file.name</name>
-      <value><%= @net_topology_script_path %></value>
+    <name>net.topology.script.file.name</name>
+    <value><%= @net_topology_script_path %></value>
   </property>
 <% end -%>
 
@@ -81,7 +81,7 @@
     <name>io.compression.codecs</name>
     <value>
     <% @io_compression_codecs.each do |codec| -%>
-        <%= codec %>,
+      <%= codec %>,
     <% end #io_compression_codecs.each -%>
     </value>
   </property>
