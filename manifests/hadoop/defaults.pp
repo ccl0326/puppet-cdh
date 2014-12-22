@@ -58,7 +58,7 @@ class cdh::hadoop::defaults {
     $hadoop_classpath                         = undef
     $java_library_path                        = undef
 
-    $lzo_enable                               = flase
+    $lzo_enabled                              = flase
     $io_compression_codec_lzo_class           = 'com.hadoop.compression.lzo.LzoCodec'
     $io_compression_codecs                    = ['org.apache.hadoop.io.compress.DefaultCodec',
                                                  'org.apache.hadoop.io.compress.GzipCodec',
