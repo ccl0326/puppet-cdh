@@ -65,7 +65,7 @@
 #                                               Default: org.apache.hadoop.io.compress.DefaultCodec
 #   $mapreduce_output_compession_type         - Whether to output compress on BLOCK or RECORD level.
 #                                               Default: RECORD
-#   $yarn_nodemanager_resource_cpu_vcores
+#   $yarn_nodemanager_resource_cpu_vcores     - Number of CPU cores that can be allocated for containers.
 #   $yarn_nodemanager_resource_memory_mb
 #   $yarn_scheduler_minimum_allocation_mb     - The minimum allocation for every container request at the RM,
 #                                               in MBs. Memory requests lower than this won't take effect, and
@@ -94,8 +94,8 @@
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
 #   $hadoop_classpath                         - Add library in HADOOP_CLASSPATH with hadoop-env.sh .
 #   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh .
-#   $lzo_enabled                              - Set true when you add lzo compress (https://github.com/twitter/hadoop-lzo).
-#   $io_compression_codec_lzo_class           - Write lzo class name (e.g. com.hadoop.compression.lzo.LzoCodec).
+#   $lzo_enabled                              - Set true when you add LZO compress.
+#   $io_compression_codec_lzo_class           - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
 #   $io_compression_codecs                    - Choose a codec when map outputs are compressed.
 #
 class cdh::hadoop(
