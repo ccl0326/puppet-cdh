@@ -96,7 +96,7 @@
 #   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh .
 #   $lzo_enabled                              - Set true when you add LZO compress.
 #   $io_compression_codec_lzo_class           - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
-#   $io_compression_codecs                    - Choose a codec when map outputs are compressed.
+#   $io_compression_codecs                    - A list of the compression codec classes that can be used for compression/decompression.
 #
 class cdh::hadoop(
     $namenode_hosts,
@@ -284,5 +284,16 @@ class cdh::hadoop(
             ($::ipaddress_eth1 and $::ipaddress_eth1 in $journalnode_hosts)))
     {
             include cdh::hadoop::journalnode
+    }
+
+    # If lzo_enabled set, LZO class will be add to io_compression_codecs
+    if $lzo_enabled {
+        if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzoCodec') {
+            $io_compression_codecs += ['com.hadoop.compression.lzo.LzoCodec']
+        }
+        
+        if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzopCodec') {
+            $io_compression_codecs += ['com.hadoop.compression.lzo.LzopCodec']
+        }
     }
 }
