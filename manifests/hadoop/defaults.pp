@@ -43,6 +43,7 @@ class cdh::hadoop::defaults {
     $yarn_scheduler_maximum_allocation_mb     = undef
 
     $fair_scheduler_template                  = 'cdh/hadoop/fair-scheduler.xml.erb'
+    $fair_user_as_default_queue               = false
 
     $hadoop_heapsize                          = undef
     $yarn_heapsize                            = undef
