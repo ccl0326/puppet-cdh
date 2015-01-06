@@ -65,6 +65,9 @@
 #                                               Default: org.apache.hadoop.io.compress.DefaultCodec
 #   $mapreduce_output_compession_type         - Whether to output compress on BLOCK or RECORD level.
 #                                               Default: RECORD
+#   $yarn_resourcemanager_recovery_enabled    - The flag to enable/disable this feature, Default false
+#                                               If this configuration property is set to true, RM will enable
+#                                               the RM-restart functionality.
 #   $yarn_nodemanager_resource_cpu_vcores     - Number of CPU cores that can be allocated for containers.
 #   $yarn_nodemanager_resource_memory_mb
 #   $yarn_scheduler_minimum_allocation_mb     - The minimum allocation for every container request at the RM,
@@ -136,7 +139,7 @@ class cdh::hadoop(
     $mapreduce_output_compression                = $::cdh::hadoop::defaults::mapreduce_output_compession,
     $mapreduce_output_compression_codec          = $::cdh::hadoop::defaults::mapreduce_output_compession_codec,
     $mapreduce_output_compression_type           = $::cdh::hadoop::defaults::mapreduce_output_compression_type,
-    $yarn_nodemanager_resource_recovery_enabled  = $::cdh::hadoop::defaults::yarn_nodemanager_resource_recovery_enabled,
+    $yarn_resourcemanager_recovery_enabled       = $::cdh::hadoop::defaults::yarn_resourcemanager_recovery_enabled,
     $yarn_nodemanager_resource_cpu_vcores        = $::cdh::hadoop::defaults::yarn_nodemanager_resource_cpu_vcores,
     $yarn_nodemanager_resource_memory_mb         = $::cdh::hadoop::defaults::yarn_nodemanager_resource_memory_mb,
     $yarn_scheduler_minimum_allocation_mb        = $::cdh::hadoop::defaults::yarn_scheduler_minimum_allocation_mb,
@@ -291,7 +294,7 @@ class cdh::hadoop(
         if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzoCodec') {
             $io_compression_codecs += ['com.hadoop.compression.lzo.LzoCodec']
         }
-        
+
         if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzopCodec') {
             $io_compression_codecs += ['com.hadoop.compression.lzo.LzopCodec']
         }
