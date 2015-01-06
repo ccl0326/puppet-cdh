@@ -41,5 +41,5 @@ HADOOP_HEAPSIZE=<%= @hadoop_heapsize %>
 export HADOOP_CLASSPATH=<%= @hadoop_classpath %>:$HADOOP_CLASSPATH
 <% end -%>
 <% if @java_library_path -%>
-export JAVA_LIBRARY_PATH=<%= @java_library_path %>
+export JAVA_LIBRARY_PATH=<%= @java_library_path %>:$JAVA_LIBRARY_PATH
 <% end -%>
