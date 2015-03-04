@@ -69,31 +69,38 @@ end
 
 <% end # if @ha_enabled -%>
   <property>
-   <name>dfs.namenode.name.dir</name>
-   <value>file://<%= (@dfs_name_dir.class == Array) ? @dfs_name_dir.join(',file://') : @dfs_name_dir %></value>
+    <name>dfs.namenode.name.dir</name>
+    <value>file://<%= (@dfs_name_dir.class == Array) ? @dfs_name_dir.join(',file://') : @dfs_name_dir %></value>
   </property>
 
 <% if @datanode_mounts -%>
   <property>
-   <name>dfs.datanode.data.dir</name>
-   <value>file://<%= @datanode_mounts.sort.collect { |mount| mount + "/" + @dfs_data_path }.join(',file://') %></value>
+    <name>dfs.datanode.data.dir</name>
+    <value>file://<%= @datanode_mounts.sort.collect { |mount| mount + "/" + @dfs_data_path }.join(',file://') %></value>
+  </property>
+<% end -%>
+
+<% if @balance_speed -%>
+  <property> 
+    <name>dfs.balance.bandwidthPerSec</name> 
+    <value><%= @balance_speed %></value>
   </property>
 <% end -%>
 
   <property>
-   <!--
-    Deprecated in CDH5. Replaced by dfs.blocksize.
-    We keep it around for a bit nonetheless, in case some application
-    still try to access it directly.
-   -->
-   <name>dfs.block.size</name>
-   <value><%= @dfs_block_size %></value>
+    <!--
+     Deprecated in CDH5. Replaced by dfs.blocksize.
+     We keep it around for a bit nonetheless, in case some application
+     still try to access it directly.
+    -->
+    <name>dfs.block.size</name>
+    <value><%= @dfs_block_size %></value>
   </property>
 
   <property>
-   <!-- Replaces dfs.block.size in CDH5 -->
-   <name>dfs.blocksize</name>
-   <value><%= @dfs_block_size %></value>
+    <!-- Replaces dfs.block.size in CDH5 -->
+    <name>dfs.blocksize</name>
+    <value><%= @dfs_block_size %></value>
   </property>
 
   <!--

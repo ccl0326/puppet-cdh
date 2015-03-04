@@ -30,7 +30,7 @@
 
   <property>
     <name>yarn.scheduler.fair.user-as-default-queue</name>
-    <value>false</value>
+    <value><%= @fair_user_as_default_queue %></value>
     <description>
       Whether to use the username associated with the allocation as the default queue
       name, in the event that a queue name is not specified. If this is set to "false"
@@ -74,6 +74,18 @@
     <description>Where to store container logs.</description>
     <name>yarn.nodemanager.log-dirs</name>
     <value><%= @datanode_mounts.collect { |mount| mount + "/" + @yarn_logs_path}.join(',') %></value>
+  </property>
+<% end -%>
+
+  <property>
+    <name>yarn.resourcemanager.recovery.enabled</name>
+    <value><%= @yarn_resourcemanager_recovery_enabled %></value>
+  </property>
+
+<% if @yarn_nodemanager_resource_cpu_vcores -%>
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value><%= @yarn_nodemanager_resource_cpu_vcores %></value>
   </property>
 <% end -%>
 

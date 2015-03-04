@@ -36,6 +36,7 @@
 #   $yarn_local_path            - Path relative to JBOD mount point for yarn local directories.
 #   $yarn_logs_path             - Path relative to JBOD mount point for yarn log directories.
 #   $dfs_block_size             - HDFS block size in bytes.  Default 64MB.
+#   $balance_speed              - HDFS balance band width Per Sec, type: byte.
 #   $io_file_buffer_size
 #   $map_tasks_maximum
 #   $reduce_tasks_maximum
@@ -51,6 +52,8 @@
 #   $yarn_app_mapreduce_am_resource_mb        - The amount of memory the MR AppMaster needs.
 #   $yarn_app_mapreduce_am_command_opts       - Java opts for the MR App Master processes. The following symbol, if
 #                                              present, will be interpolated: @taskid@ is replaced by current TaskID
+#   $mapreduce_shuffle_memory_limit_percent   - Maximum percentage of the in-memory limit that a single shuffle can
+#                                              consume, Default: 0.25.
 #   $mapreduce_shuffle_port
 #   $mapreduce_intermediate_compression       - If true, intermediate MapReduce data
 #                                               will be compressed.  Default: true.
@@ -62,6 +65,10 @@
 #                                               Default: org.apache.hadoop.io.compress.DefaultCodec
 #   $mapreduce_output_compession_type         - Whether to output compress on BLOCK or RECORD level.
 #                                               Default: RECORD
+#   $yarn_resourcemanager_recovery_enabled    - The flag to enable/disable this feature, Default false
+#                                               If this configuration property is set to true, RM will enable
+#                                               the RM-restart functionality.
+#   $yarn_nodemanager_resource_cpu_vcores     - Number of CPU cores that can be allocated for containers.
 #   $yarn_nodemanager_resource_memory_mb
 #   $yarn_scheduler_minimum_allocation_mb     - The minimum allocation for every container request at the RM,
 #                                               in MBs. Memory requests lower than this won't take effect, and
@@ -88,6 +95,13 @@
 #   $fair_scheduler_template                  - The fair-scheduler.xml queue configuration template.
 #                                               If you set this to false or undef, FairScheduler will
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
+#   $fair_user_as_default_queue               - Whether to use the username associated with the
+#                                               allocation as the default queue name. Default: false
+#   $hadoop_classpath                         - Add library in HADOOP_CLASSPATH with hadoop-env.sh .
+#   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh .
+#   $lzo_enabled                              - Set true when you add LZO compress.
+#   $io_compression_codec_lzo_class           - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
+#   $io_compression_codecs                    - A list of the compression codec classes that can be used for compression/decompression.
 #
 class cdh::hadoop(
     $namenode_hosts,
@@ -106,6 +120,7 @@ class cdh::hadoop(
     $webhdfs_enabled                             = $::cdh::hadoop::defaults::webhdfs_enabled,
     $httpfs_enabled                              = $::cdh::hadoop::defaults::httpfs_enabled,
     $io_file_buffer_size                         = $::cdh::hadoop::defaults::io_file_buffer_size,
+    $balance_speed                               = $::cdh::hadoop::defaults::balance_speed,
     $mapreduce_system_dir                        = $::cdh::hadoop::defaults::mapreduce_system_dir,
     $mapreduce_map_tasks_maximum                 = $::cdh::hadoop::defaults::mapreduce_map_tasks_maximum,
     $mapreduce_reduce_tasks_maximum              = $::cdh::hadoop::defaults::mapreduce_reduce_tasks_maximum,
@@ -120,11 +135,14 @@ class cdh::hadoop(
     $mapreduce_map_java_opts                     = $::cdh::hadoop::defaults::mapreduce_map_java_opts,
     $mapreduce_reduce_java_opts                  = $::cdh::hadoop::defaults::mapreduce_reduce_java_opts,
     $mapreduce_shuffle_port                      = $::cdh::hadoop::defaults::mapreduce_shuffle_port,
+    $mapreduce_shuffle_memory_limit_percent      = $::cdh::hadoop::defaults::mapreduce_shuffle_memory_limit_percent,
     $mapreduce_intermediate_compression          = $::cdh::hadoop::defaults::mapreduce_intermediate_compression,
     $mapreduce_intermediate_compression_codec    = $::cdh::hadoop::defaults::mapreduce_intermediate_compression_codec,
     $mapreduce_output_compression                = $::cdh::hadoop::defaults::mapreduce_output_compession,
     $mapreduce_output_compression_codec          = $::cdh::hadoop::defaults::mapreduce_output_compession_codec,
     $mapreduce_output_compression_type           = $::cdh::hadoop::defaults::mapreduce_output_compression_type,
+    $yarn_resourcemanager_recovery_enabled       = $::cdh::hadoop::defaults::yarn_resourcemanager_recovery_enabled,
+    $yarn_nodemanager_resource_cpu_vcores        = $::cdh::hadoop::defaults::yarn_nodemanager_resource_cpu_vcores,
     $yarn_nodemanager_resource_memory_mb         = $::cdh::hadoop::defaults::yarn_nodemanager_resource_memory_mb,
     $yarn_scheduler_minimum_allocation_mb        = $::cdh::hadoop::defaults::yarn_scheduler_minimum_allocation_mb,
     $yarn_scheduler_maximum_allocation_mb        = $::cdh::hadoop::defaults::yarn_scheduler_maximum_allocation_mb,
@@ -136,6 +154,12 @@ class cdh::hadoop(
     $gelf_logging_host                           = $::cdh::hadoop::defaults::gelf_logging_host,
     $gelf_logging_port                           = $::cdh::hadoop::defaults::gelf_logging_port,
     $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
+    $fair_user_as_default_queue                  = $::cdh::hadoop::defaults::fair_user_as_default_queue,
+    $hadoop_classpath                            = $::cdh::hadoop::defaults::hadoop_classpath,
+    $java_library_path                           = $::cdh::hadoop::defaults::java_library_path,
+    $lzo_enabled                                 = $::cdh::hadoop::defaults::lzo_enabled,
+    $io_compression_codec_lzo_class              = $::cdh::hadoop::defaults::io_compression_codec_lzo_class,
+    $io_compression_codecs                       = $::cdh::hadoop::defaults::io_compression_codecs,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the
@@ -266,5 +290,16 @@ class cdh::hadoop(
             ($::ipaddress_eth1 and $::ipaddress_eth1 in $journalnode_hosts)))
     {
             include cdh::hadoop::journalnode
+    }
+
+    # If lzo_enabled set, LZO class will be add to io_compression_codecs
+    if $lzo_enabled {
+        if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzoCodec') {
+            $io_compression_codecs += ['com.hadoop.compression.lzo.LzoCodec']
+        }
+
+        if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzopCodec') {
+            $io_compression_codecs += ['com.hadoop.compression.lzo.LzopCodec']
+        }
     }
 }

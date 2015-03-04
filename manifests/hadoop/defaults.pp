@@ -16,6 +16,7 @@ class cdh::hadoop::defaults {
     $httpfs_enabled                           = true
     $mapreduce_system_dir                     = undef
     $io_file_buffer_size                      = undef
+    $balance_speed                            = undef
 
     $mapreduce_map_tasks_maximum              = undef
     $mapreduce_reduce_tasks_maximum           = undef
@@ -32,17 +33,21 @@ class cdh::hadoop::defaults {
     $yarn_app_mapreduce_am_command_opts       = undef
 
     $mapreduce_shuffle_port                   = undef
+    $mapreduce_shuffle_memory_limit_percent   = undef
     $mapreduce_intermediate_compression       = false
     $mapreduce_intermediate_compression_codec = 'org.apache.hadoop.io.compress.DefaultCodec'
     $mapreduce_output_compression             = false
     $mapreduce_output_compression_codec       = 'org.apache.hadoop.io.compress.DefaultCodec'
     $mapreduce_output_compression_type        = 'RECORD'
 
+    $yarn_resourcemanager_recovery_enabled    = false
+    $yarn_nodemanager_resource_cpu_vcores     = undef
     $yarn_nodemanager_resource_memory_mb      = undef
     $yarn_scheduler_minimum_allocation_mb     = undef
     $yarn_scheduler_maximum_allocation_mb     = undef
 
     $fair_scheduler_template                  = 'cdh/hadoop/fair-scheduler.xml.erb'
+    $fair_user_as_default_queue               = false
 
     $hadoop_heapsize                          = undef
     $yarn_heapsize                            = undef
@@ -52,6 +57,15 @@ class cdh::hadoop::defaults {
     $gelf_logging_enabled                     = false
     $gelf_logging_host                        = 'localhost'
     $gelf_logging_port                        = 12201
+
+    $hadoop_classpath                         = undef
+    $java_library_path                        = undef
+
+    $lzo_enabled                              = flase
+    $io_compression_codec_lzo_class           = 'com.hadoop.compression.lzo.LzoCodec'
+    $io_compression_codecs                    = ['org.apache.hadoop.io.compress.DefaultCodec',
+                                                 'org.apache.hadoop.io.compress.GzipCodec',
+                                                 'org.apache.hadoop.io.compress.BZip2Codec']
 
     # JMX Ports (These are not currently configurable)
     $namenode_jmxremote_port           = 9980
