@@ -2,16 +2,25 @@
 #
 # Installs HBase Master
 #
+# === Parameters
+#
+# [*version*]
+#   hbase-master package version number
+#
 # === Examples
 #
-#  include cdh::hbase::master
+#  class { 'cdh::hbase::master':
+#    version => '0.98.6'
+#  }
 #
-class cdh::hbase::master() {
+class cdh::hbase::master(
+  $version
+) {
   # cdh::hbase::master requires HBase package and configs are installed.
   Class['cdh::hbase'] -> Class['cdh::hbase::master']
 
   package { 'hbase-master':
-    ensure => 'installed'
+    ensure => $version
   }
   # sudo -u hdfs hdfs dfs -mkdir /hbase
   # sudo -u hdfs hdfs dfs -chown hbase /hbase

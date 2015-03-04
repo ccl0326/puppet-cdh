@@ -2,16 +2,25 @@
 #
 # Installs HBase RegionServer and Thrift server
 #
+# === Parameters
+#
+# [*version*]
+#   hbase-regionserver and hbase-thrift package version number
+#
 # === Examples
 #
-#  include cdh::hbase::slave
+#  class { 'cdh::hbase::slave':
+#    version => '0.98.6'
+#  }
 #
-class cdh::hbase::slave() {
+class cdh::hbase::slave(
+  $version
+) {
   # cdh::hbase::slave requires HBase package and configs are installed.
   Class['cdh::hbase'] -> Class['cdh::hbase::slave']
 
   package { 'hbase-regionserver':
-    ensure => 'installed'
+    ensure => $version
   }
   service { 'hbase-regionserver':
     ensure     => 'running',
@@ -22,6 +31,6 @@ class cdh::hbase::slave() {
   }
 
   package { 'hbase-thrift':
-    ensure => 'installed'
+    ensure => $version
   }
 }

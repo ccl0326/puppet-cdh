@@ -6,6 +6,9 @@
 #
 # === Parameters
 #
+# [*version*]
+#   hbase package version number
+#
 # [*namenode_host*]
 #   NameNode hostname
 #
@@ -31,6 +34,7 @@
 # === Examples
 #
 #  class { 'cdh::hbase':
+#    version         => '0.98.6',
 #    namenode_host   => 'namenode.domain.org',
 #    zookeeper_hosts => [
 #      'zk1.domain.org',
@@ -40,6 +44,7 @@
 #  }
 #
 class cdh::hbase(
+  $version,
   $namenode_host,
   $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
   $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
@@ -51,7 +56,7 @@ class cdh::hbase(
   Class['cdh::hadoop'] -> Class['cdh::hbase']
 
   package { 'hbase':
-    ensure => 'installed'
+    ensure => $version
   }
 
   $config_directory = "/etc/hbase/conf.${cdh::hadoop::cluster_name}"
