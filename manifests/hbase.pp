@@ -34,7 +34,7 @@
 # === Examples
 #
 #  class { 'cdh::hbase':
-#    version         => '0.98.6',
+#    version         => '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0',
 #    namenode_host   => 'namenode.domain.org',
 #    zookeeper_hosts => [
 #      'zk1.domain.org',

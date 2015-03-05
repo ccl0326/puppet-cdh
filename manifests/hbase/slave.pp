@@ -10,7 +10,7 @@
 # === Examples
 #
 #  class { 'cdh::hbase::slave':
-#    version => '0.98.6'
+#    version => '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
 #  }
 #
 class cdh::hbase::slave(

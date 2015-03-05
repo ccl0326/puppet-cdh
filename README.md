@@ -336,8 +336,9 @@ Hue will be configured to run its Hive and Oozie apps.
 Install HBase Master:
 
 ```puppet
+$hbase_version = '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
 class { 'cdh::hbase':
-  version         => '0.98.6',
+  version         => $hbase_version,
   namenode_host   => 'namenode.domain.org',
   zookeeper_hosts => [
     'zk1.domain.org',
@@ -346,15 +347,16 @@ class { 'cdh::hbase':
   ]
 }
 class { 'cdh::hbase::master':
-  version => '0.98.6'
+  version => $hbase_version
 }
 ```
 
 Install HBase RegionServer and Thrift server (typically on all of the slave nodes in a cluster):
 
 ```puppet
+$hbase_version = '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
 class { 'cdh::hbase':
-  version         => '0.98.6',
+  version         => $hbase_version,
   namenode_host   => 'namenode.domain.org',
   zookeeper_hosts => [
     'zk1.domain.org',
@@ -363,6 +365,6 @@ class { 'cdh::hbase':
   ]
 }
 class { 'cdh::hbase::slave':
-  version => '0.98.6'
+  version => $hbase_version
 }
 ```
