@@ -233,6 +233,13 @@ class cdh::hadoop(
         }
     }
 
+    # If lzo_enabled set, LZO class will be add to io_compression_codecs
+    if $lzo_enabled and (! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzoCodec')) {
+        $new_io_compression_codecs = concat($io_compression_codecs, ['com.hadoop.compression.lzo.LzoCodec', 'com.hadoop.compression.lzo.LzopCodec'])
+    } else {
+        $new_io_compression_codecs = $io_compression_codecs
+    }
+
     file { "${config_directory}/log4j.properties":
         content => template('cdh/hadoop/log4j.properties.erb'),
     }
@@ -290,16 +297,5 @@ class cdh::hadoop(
             ($::ipaddress_eth1 and $::ipaddress_eth1 in $journalnode_hosts)))
     {
             include cdh::hadoop::journalnode
-    }
-
-    # If lzo_enabled set, LZO class will be add to io_compression_codecs
-    if $lzo_enabled {
-        if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzoCodec') {
-            $io_compression_codecs += ['com.hadoop.compression.lzo.LzoCodec']
-        }
-
-        if ! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzopCodec') {
-            $io_compression_codecs += ['com.hadoop.compression.lzo.LzopCodec']
-        }
     }
 }
