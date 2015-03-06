@@ -3,6 +3,7 @@
 # Default HBase configs
 #
 class cdh::hbase::defaults {
+  $version                        = 'installed'
   $zookeeper_hosts                = undef
   $hbase_site_template            = 'cdh/hbase/hbase-site.xml.erb'
   $hadoop_metrics2_hbase_template = 'cdh/hbase/hadoop-metrics2-hbase.properties.erb'

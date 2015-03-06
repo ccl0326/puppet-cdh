@@ -7,7 +7,7 @@
 # === Parameters
 #
 # [*version*]
-#   hbase package version number
+#   hbase package version number. Default: installed
 #
 # [*namenode_host*]
 #   NameNode hostname
@@ -44,8 +44,8 @@
 #  }
 #
 class cdh::hbase(
-  $version,
   $namenode_host,
+  $version                        = $cdh::hbase::defaults::version,
   $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
   $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
   $hadoop_metrics2_hbase_template = $cdh::hbase::defaults::hadoop_metrics2_hbase_template,

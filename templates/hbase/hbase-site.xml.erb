@@ -27,7 +27,7 @@
   </property>
   <property>
     <name>hbase.rootdir</name>
-    <value>hdfs://<%= @namenode_host %>:8020/hbase</value>
+    <value>hdfs://<%= @namenode_host %>:8020/user/hbase</value>
   </property>
 <% if @zookeeper_hosts and !@zookeeper_hosts.empty? -%>
   <property>

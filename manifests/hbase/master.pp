@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*version*]
-#   hbase-master package version number
+#   hbase-master package version number. Default: installed
 #
 # === Examples
 #
@@ -14,7 +14,7 @@
 #  }
 #
 class cdh::hbase::master(
-  $version
+  $version = $cdh::hbase::defaults::version
 ) {
   # cdh::hbase::master requires HBase package and configs are installed.
   Class['cdh::hbase'] -> Class['cdh::hbase::master']
@@ -24,7 +24,7 @@ class cdh::hbase::master(
   }
   # sudo -u hdfs hdfs dfs -mkdir /hbase
   # sudo -u hdfs hdfs dfs -chown hbase /hbase
-  cdh::hadoop::directory { '/hbase':
+  cdh::hadoop::directory { '/user/hbase':
     owner => 'hbase'
   }
   service { 'hbase-master':

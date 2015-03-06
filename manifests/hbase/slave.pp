@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*version*]
-#   hbase-regionserver and hbase-thrift package version number
+#   hbase-regionserver and hbase-thrift package version number. Default: installed
 #
 # === Examples
 #
@@ -14,7 +14,7 @@
 #  }
 #
 class cdh::hbase::slave(
-  $version
+  $version = $cdh::hbase::defaults::version
 ) {
   # cdh::hbase::slave requires HBase package and configs are installed.
   Class['cdh::hbase'] -> Class['cdh::hbase::slave']
