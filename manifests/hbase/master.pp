@@ -22,9 +22,10 @@ class cdh::hbase::master(
   package { 'hbase-master':
     ensure => $version
   }
-  # sudo -u hdfs hdfs dfs -mkdir /hbase
-  # sudo -u hdfs hdfs dfs -chown hbase /hbase
-  cdh::hadoop::directory { '/user/hbase':
+  # sudo -u hdfs hdfs dfs -mkdir /user/hbase
+  # sudo -u hdfs hdfs dfs -chown hbase /user/hbase
+  $hbase_rootdir = '/user/hbase'
+  cdh::hadoop::directory { $hbase_rootdir:
     owner => 'hbase'
   }
   service { 'hbase-master':
@@ -32,6 +33,6 @@ class cdh::hbase::master(
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    require    => [Package['hbase-master'], Cdh::Hadoop::Directory['/hbase']]
+    require    => [Package['hbase-master'], Cdh::Hadoop::Directory[$hbase_rootdir]]
   }
 }
