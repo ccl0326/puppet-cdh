@@ -7,8 +7,8 @@
 #
 # == Parameters
 # $metastore_host                - fqdn of the metastore host
-# $zookeeper_hosts               - Array of zookeeper hostname/IP(:port)s.
-#                                  Default: undef (zookeeper lock management
+# $zookeeper_hosts               - Array of ZooKeeper hostname/IP(:port)s.
+#                                  Default: undef (ZooKeeper lock management
 #                                  will not be used).
 #
 # $jdbc_database                 - Metastore JDBC database name.

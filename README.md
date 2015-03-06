@@ -327,6 +327,44 @@ class { 'cdh::hue':
 There are many more parameters to the ```cdh::hue``` class.  See the class
 documentation in manifests/hue.pp.
 
-
 If you include ```cdh::hive``` or ```cdh::oozie``` classes on this node,
 Hue will be configured to run its Hive and Oozie apps.
+
+
+# HBase
+
+Install HBase Master:
+
+```puppet
+$hbase_version = '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
+class { 'cdh::hbase':
+  version         => $hbase_version,
+  namenode_host   => 'namenode.domain.org',
+  zookeeper_hosts => [
+    'zk1.domain.org',
+    'zk2.domain.org',
+    'zk3.domain.org'
+  ]
+}
+class { 'cdh::hbase::master':
+  version => $hbase_version
+}
+```
+
+Install HBase RegionServer and Thrift server (typically on all of the slave nodes in a cluster):
+
+```puppet
+$hbase_version = '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
+class { 'cdh::hbase':
+  version         => $hbase_version,
+  namenode_host   => 'namenode.domain.org',
+  zookeeper_hosts => [
+    'zk1.domain.org',
+    'zk2.domain.org',
+    'zk3.domain.org'
+  ]
+}
+class { 'cdh::hbase::slave':
+  version => $hbase_version
+}
+```

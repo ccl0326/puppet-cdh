@@ -80,11 +80,10 @@
 <property>
   <name>io.compression.codecs</name>
   <value>
-  <% @io_compression_codecs.each do |codec| -%>
+  <% @new_io_compression_codecs.each do |codec| -%>
     <%= codec %>,
-  <% end #io_compression_codecs.each -%>
+  <% end #new_io_compression_codecs.each -%>
   </value>
 </property>
-
 
 </configuration>
