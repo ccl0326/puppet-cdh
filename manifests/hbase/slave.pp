@@ -33,4 +33,11 @@ class cdh::hbase::slave(
   package { 'hbase-thrift':
     ensure => $version
   }
+  service { 'hbase-thrift':
+    ensure     => 'running',
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+    require    => Package['hbase-thrift']
+  }
 }
