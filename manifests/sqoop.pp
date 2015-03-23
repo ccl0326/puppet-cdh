@@ -1,12 +1,10 @@
-# == Class cdh::sqoop
+# == Class: cdh::sqoop
+#
 # Installs Sqoop 1
 #
-#
-# NOTE: There is no sqoop-conf alternative defined,
-# because there is not yet any sqoop specific
-# configuartion handled by this puppet module.
-#
-class cdh::sqoop {
+class cdh::sqoop(
+    $hadoop_opts = $::cdh::sqoop::defaults::hadoop_opts
+) {
     # Sqoop requires Hadoop configs installed.
     Class['cdh::hadoop'] -> Class['cdh::sqoop']
 
@@ -26,5 +24,22 @@ class cdh::sqoop {
         ensure  => 'link',
         target  => '/usr/share/java/mysql-connector-java.jar',
         require => [Package['sqoop'], Package['libmysql-java']],
+    }
+
+    $config_directory = "/etc/sqoop/conf.${cdh::hadoop::cluster_name}"
+    # Create the $cluster_name based $config_directory.
+    file { $config_directory:
+        ensure  => 'directory',
+        require => Package['sqoop']
+    }
+    cdh::alternative { 'sqoop-conf':
+        link    => '/etc/sqoop/conf',
+        path    => $config_directory,
+        require => File[$config_directory]
+    }
+
+    file { "${config_directory}/sqoop-env.sh":
+        content => template('cdh/sqoop/sqoop-env.sh.erb'),
+        require => [Package['sqoop'], File[$config_directory]]
     }
 }
