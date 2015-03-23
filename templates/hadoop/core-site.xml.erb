@@ -77,13 +77,13 @@
   </property>
 <% end -%>
 
-<property>
-  <name>io.compression.codecs</name>
-  <value>
-  <% @new_io_compression_codecs.each do |codec| -%>
-    <%= codec %>,
-  <% end #new_io_compression_codecs.each -%>
-  </value>
-</property>
+  <property>
+    <name>io.compression.codecs</name>
+    <value>
+    <% @new_io_compression_codecs.each do |codec| -%>
+      <%= codec %>,
+    <% end #new_io_compression_codecs.each -%>
+    </value>
+  </property>
 
 </configuration>
