@@ -72,4 +72,6 @@ class cdh::hue::defaults {
     $hue_ini_template         = 'cdh/hue/hue.ini.erb'
     $hue_log4j_template       = 'cdh/hue/log4j.properties.erb'
     $hue_log_conf_template    = 'cdh/hue/log.conf.erb'
+
+    $hbase_clusters           = undef
 }
