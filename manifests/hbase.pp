@@ -16,6 +16,9 @@
 #   Array of ZooKeeper hostname/IP(:port)s. Default: undef (HBase will run
 #   in pseudo-distributed mode)
 #
+# [*hbase_regionserver_codecs*]
+#   compression codecs check
+#
 # [*hbase_site_template*]
 #   hbase-site.xml template path
 #
@@ -34,19 +37,21 @@
 # === Examples
 #
 #  class { 'cdh::hbase':
-#    version         => '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0',
-#    namenode_host   => 'namenode.domain.org',
-#    zookeeper_hosts => [
+#    version                   => '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0',
+#    namenode_host             => 'namenode.domain.org',
+#    zookeeper_hosts           => [
 #      'zk1.domain.org',
 #      'zk2.domain.org',
 #      'zk3.domain.org'
-#    ]
+#    ],
+#    hbase_regionserver_codecs => ['snappy']
 #  }
 #
 class cdh::hbase(
   $namenode_host,
   $version                        = $cdh::hbase::defaults::version,
   $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
+  $hbase_regionserver_codecs      = $cdh::hbase::defaults::hbase_regionserver_codecs,
   $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
   $hadoop_metrics2_hbase_template = $cdh::hbase::defaults::hadoop_metrics2_hbase_template,
   $hbase_env_template             = $cdh::hbase::defaults::hbase_env_template,
