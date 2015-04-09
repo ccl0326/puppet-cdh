@@ -98,8 +98,8 @@
 #                                               be disabled.  Default: cdh/hadoop/fair-scheduler.xml.erb
 #   $fair_user_as_default_queue               - Whether to use the username associated with the
 #                                               allocation as the default queue name. Default: false
-#   $hadoop_classpath                         - Add library in HADOOP_CLASSPATH with hadoop-env.sh .
-#   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh .
+#   $hadoop_classpath                         - Add library in HADOOP_CLASSPATH with hadoop-env.sh.
+#   $java_library_path                        - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh.
 #   $lzo_enabled                              - Set true when you add LZO compress.
 #   $io_compression_codec_lzo_class           - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
 #   $io_compression_codecs                    - A list of the compression codec classes that can be used for compression/decompression.
