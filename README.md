@@ -53,17 +53,19 @@ All Hadoop enabled nodes should include the ```cdh::hadoop``` class.
 class my::hadoop {
   class { 'cdh::hadoop':
     # Logical Hadoop cluster name.
-    cluster_name    => 'mycluster',
+    cluster_name      => 'mycluster',
+    # Set to false if you doesn't need setup MapReduce (YARN or MRv1), i.e. only HDFS installed.
+    mapreduce_enabled => true,
     # Must pass an array of hosts here, even if you are
     # not using HA and only have a single NameNode.
-    namenode_hosts  => ['namenode1.domain.org'],
-    datanode_mounts => [
+    namenode_hosts    => ['namenode1.domain.org'],
+    datanode_mounts   => [
       '/var/lib/hadoop/data/a',
       '/var/lib/hadoop/data/b',
       '/var/lib/hadoop/data/c'
     ],
     # You can also provide an array of dfs_name_dirs.
-    dfs_name_dir    => '/var/lib/hadoop/name',
+    dfs_name_dir      => '/var/lib/hadoop/name',
   }
 }
 

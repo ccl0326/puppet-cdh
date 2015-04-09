@@ -22,6 +22,7 @@
 #   $cluster_name               - Arbitrary logical HDFS cluster name.  This will be used
 #                                 as the nameserivce id if you set $ha_enabled to true.
 #                                 Default: 'cdh'.
+#   $mapreduce_enabled          - Set to false if you doesn't need setup MapReduce (YARN or MRv1), i.e. only HDFS installed.  Default: true.
 #   $journalnode_hosts          - Array of JournalNode hosts.  If this is provided,
 #                                 Hadoop will be configured to expect to have
 #                                 a primary NameNode as well as at least
@@ -107,6 +108,7 @@ class cdh::hadoop(
     $namenode_hosts,
     $dfs_name_dir,
     $cluster_name                                = $::cdh::hadoop::defaults::cluster_name,
+    $mapreduce_enabled                           = $::cdh::hadoop::defaults::mapreduce_enabled,
     $journalnode_hosts                           = $::cdh::hadoop::defaults::journalnode_hosts,
     $dfs_journalnode_edits_dir                   = $::cdh::hadoop::defaults::dfs_journalnode_edits_dir,
 
@@ -294,8 +296,7 @@ class cdh::hadoop(
     if ($journalnode_hosts and (
             ($::fqdn           and $::fqdn           in $journalnode_hosts) or
             ($::ipaddress      and $::ipaddress      in $journalnode_hosts) or
-            ($::ipaddress_eth1 and $::ipaddress_eth1 in $journalnode_hosts)))
-    {
-            include cdh::hadoop::journalnode
+            ($::ipaddress_eth1 and $::ipaddress_eth1 in $journalnode_hosts))) {
+        include cdh::hadoop::journalnode
     }
 }

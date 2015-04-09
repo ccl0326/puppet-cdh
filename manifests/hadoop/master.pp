@@ -10,6 +10,8 @@ class cdh::hadoop::master {
 
     include cdh::hadoop::namenode::primary
 
-    include cdh::hadoop::resourcemanager
-    include cdh::hadoop::historyserver
+    if ($::cdh::hadoop::mapreduce_enabled) {
+        include cdh::hadoop::resourcemanager
+        include cdh::hadoop::historyserver
+    }
 }

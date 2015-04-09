@@ -3,6 +3,7 @@
 #
 class cdh::hadoop::defaults {
     $cluster_name = 'cdh'
+    $mapreduce_enabled                        = true
     $journalnode_hosts                        = undef
     $dfs_journalnode_edits_dir                = undef
 
