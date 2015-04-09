@@ -9,8 +9,8 @@ NOTE: The main puppet-cdh repository is hosted in WMF Gerrit at
 [operations/puppet/cdh](https://gerrit.wikimedia.org/r/#/admin/projects/operations/puppet/cdh).
 
 
-Installs HDFS, YARN, Hive, Pig, Sqoop (1), Oozie and
-Hue.  Note that, in order for this module to work, you will have to ensure
+Installs HDFS, YARN, Hive, Pig, Sqoop (1), Oozie,
+Hue and HBase.  Note that, in order for this module to work, you will have to ensure
 that:
 
 - Java version 7 or greater is installed
@@ -51,24 +51,24 @@ All Hadoop enabled nodes should include the ```cdh::hadoop``` class.
 
 ```puppet
 class my::hadoop {
-    class { 'cdh::hadoop':
-        # Logical Hadoop cluster name.
-        cluster_name       => 'mycluster',
-        # Must pass an array of hosts here, even if you are
-        # not using HA and only have a single NameNode.
-        namenode_hosts     => ['namenode1.domain.org'],
-        datanode_mounts    => [
-            '/var/lib/hadoop/data/a',
-            '/var/lib/hadoop/data/b',
-            '/var/lib/hadoop/data/c'
-        ],
-        # You can also provide an array of dfs_name_dirs.
-        dfs_name_dir       => '/var/lib/hadoop/name',
-    }
+  class { 'cdh::hadoop':
+    # Logical Hadoop cluster name.
+    cluster_name    => 'mycluster',
+    # Must pass an array of hosts here, even if you are
+    # not using HA and only have a single NameNode.
+    namenode_hosts  => ['namenode1.domain.org'],
+    datanode_mounts => [
+      '/var/lib/hadoop/data/a',
+      '/var/lib/hadoop/data/b',
+      '/var/lib/hadoop/data/c'
+    ],
+    # You can also provide an array of dfs_name_dirs.
+    dfs_name_dir    => '/var/lib/hadoop/name',
+  }
 }
 
 node 'hadoop-client.domain.org' {
-    include my::hadoop
+  include my::hadoop
 }
 ```
 
@@ -83,11 +83,11 @@ points provided.
 
 ```puppet
 class my::hadoop::master inherits my::hadoop {
-    include cdh::hadoop::master
+  include cdh::hadoop::master
 }
 
 node 'namenode1.domain.org' {
-    include my::hadoop::master
+  include my::hadoop::master
 }
 ```
 
@@ -99,11 +99,11 @@ and set up the JobTracker.
 
 ```puppet
 class my::hadoop::worker inherits my::hadoop {
-    include cdh::hadoop::worker
+  include cdh::hadoop::worker
 }
 
 node 'datanode[1234].domain.org' {
-    include my::hadoop::worker
+  include my::hadoop::worker
 }
 ```
 
@@ -140,28 +140,28 @@ your hadoop nodes, as well as specify the hosts of your standby NameNodes.
 ```puppet
 
 class my::hadoop {
-    class { 'cdh::hadoop':
-        cluster_name        => 'mycluster',
-        namenode_hosts      => [
-            'namenode1.domain.org',
-            'namenode2.domain.org
-        ],
-        journalnode_hosts   => [
-            'datanode1.domain.org',
-            'datanode2.domain.org',
-            'datanode3.domain.org'
-        ],
-        datanode_mounts    => [
-            '/var/lib/hadoop/data/a',
-            '/var/lib/hadoop/data/b',
-            '/var/lib/hadoop/data/c'
-        ],
-        dfs_name_dir       => ['/var/lib/hadoop/name', '/mnt/hadoop_name'],
-    }
+  class { 'cdh::hadoop':
+    cluster_name      => 'mycluster',
+    namenode_hosts    => [
+      'namenode1.domain.org',
+      'namenode2.domain.org
+    ],
+    journalnode_hosts => [
+      'datanode1.domain.org',
+      'datanode2.domain.org',
+      'datanode3.domain.org'
+    ],
+    datanode_mounts   => [
+      '/var/lib/hadoop/data/a',
+      '/var/lib/hadoop/data/b',
+      '/var/lib/hadoop/data/c'
+    ],
+    dfs_name_dir      => ['/var/lib/hadoop/name', '/mnt/hadoop_name'],
+  }
 }
 
 node 'hadoop-client.domain.org' {
-    include my::hadoop
+  include my::hadoop
 }
 ```
 
@@ -176,18 +176,18 @@ include ```cdh::hadoop::namenode::standby```:
 
 ``` puppet
 class my::hadoop::master inherits my::hadoop {
-    include cdh::hadoop::master
+  include cdh::hadoop::master
 }
 class my::hadoop::standby inherits my::hadoop {
-    include cdh::hadoop::namenode::standby
+  include cdh::hadoop::namenode::standby
 }
 
 node 'namenode1.domain.org' {
-    include my::hadoop::master
+  include my::hadoop::master
 }
 
 node 'namenode2.domain.org' {
-    include my::hadoop::standby
+  include my::hadoop::standby
 }
 ```
 
@@ -210,7 +210,6 @@ formatted/bootstrapped, etc.) you can initialize your
 JournalNodes' shared edit directories.
 
 ```bash
-
 # Shutdown your HDFS cluster.  Everything will need a
 # restart on order to load the newly applied HA configs.
 # (Leave the JournalNodes running.)
@@ -319,8 +318,8 @@ To install hue server, simply:
 
 ```puppet
 class { 'cdh::hue':
-    secret_key       => 'ii7nnoCGtP0wjub6nqnRfQx93YUV3iWG', # your secret key here.
-    hive_server_host => 'hive.example.com',
+  secret_key       => 'ii7nnoCGtP0wjub6nqnRfQx93YUV3iWG',  # your secret key here.
+  hive_server_host => 'hive.example.com',
 }
 ```
 
