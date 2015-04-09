@@ -18,8 +18,10 @@ class cdh::hadoop::worker {
         require => Cdh::Hadoop::Worker::Paths[$::cdh::hadoop::datanode_mounts],
     }
 
-    # YARN uses NodeManager.
-    class { 'cdh::hadoop::nodemanager':
-        require => Cdh::Hadoop::Worker::Paths[$::cdh::hadoop::datanode_mounts],
+    if ($::cdh::hadoop::mapreduce_enabled) {
+        # YARN uses NodeManager.
+        class { 'cdh::hadoop::nodemanager':
+            require => Cdh::Hadoop::Worker::Paths[$::cdh::hadoop::datanode_mounts],
+        }
     }
 }
