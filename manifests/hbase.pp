@@ -19,6 +19,9 @@
 # [*hbase_regionserver_codecs*]
 #   compression codecs check
 #
+# [*zookeeper_znode_parent*]
+#   Root ZNode for HBase in ZooKeeper. Default: /hbase
+#
 # [*hbase_site_template*]
 #   hbase-site.xml template path
 #
@@ -52,6 +55,7 @@ class cdh::hbase(
   $version                        = $cdh::hbase::defaults::version,
   $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
   $hbase_regionserver_codecs      = $cdh::hbase::defaults::hbase_regionserver_codecs,
+  $zookeeper_znode_parent         = $cdh::hbase::defaults::zookeeper_znode_parent,
   $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
   $hadoop_metrics2_hbase_template = $cdh::hbase::defaults::hadoop_metrics2_hbase_template,
   $hbase_env_template             = $cdh::hbase::defaults::hbase_env_template,
