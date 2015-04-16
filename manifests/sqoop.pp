@@ -2,8 +2,18 @@
 #
 # Installs Sqoop 1
 #
+# === Parameters
+#
+# [*sqoop_metastore_client_autoconnect_url*]
+#   The connect string to use when connecting to a job-management metastore. Default: undef
+#
+# [*sqoop_metastore_client_record_password*]
+#   If true, allow saved passwords in the metastore. Default: true
+#
 class cdh::sqoop(
-    $hadoop_opts = $::cdh::sqoop::defaults::hadoop_opts
+    $hadoop_opts                            = $::cdh::sqoop::defaults::hadoop_opts,
+    $sqoop_metastore_client_autoconnect_url = $::cdh::sqoop::defaults::sqoop_metastore_client_autoconnect_url,
+    $sqoop_metastore_client_record_password = $::cdh::sqoop::defaults::sqoop_metastore_client_record_password
 ) {
     # Sqoop requires Hadoop configs installed.
     Class['cdh::hadoop'] -> Class['cdh::sqoop']
@@ -40,6 +50,10 @@ class cdh::sqoop(
 
     file { "${config_directory}/sqoop-env.sh":
         content => template('cdh/sqoop/sqoop-env.sh.erb'),
+        require => [Package['sqoop'], File[$config_directory]]
+    }
+    file { "${config_directory}/sqoop-site.xml":
+        content => template('cdh/sqoop/sqoop-site.xml.erb'),
         require => [Package['sqoop'], File[$config_directory]]
     }
 }
