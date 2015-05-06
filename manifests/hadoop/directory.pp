@@ -40,16 +40,14 @@ define cdh::hadoop::directory (
         exec { "cdh::hadoop::directory ${title}":
             command => "/usr/bin/hdfs dfs -mkdir -p ${path} && /usr/bin/hdfs dfs -chmod ${mode} ${path} && /usr/bin/hdfs dfs -chown ${owner}:${group} ${path}",
             unless  => "/usr/bin/hdfs dfs -test -e ${path}",
-            user    => 'hdfs',
-            require => Service['hadoop-hdfs-namenode'],
+            user    => 'hdfs'
         }
     }
     else {
         exec { "cdh::hadoop::directory ${title}":
             command => "/usr/bin/hdfs dfs -rm -R ${path}",
             onlyif  => "/usr/bin/hdfs dfs -test -e ${path}",
-            user    => 'hdfs',
-            require => Service['hadoop-hdfs-namenode'],
+            user    => 'hdfs'
         }
     }
 }
