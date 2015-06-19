@@ -103,6 +103,7 @@
 #   $lzo_enabled                              - Set true when you add LZO compress.
 #   $io_compression_codec_lzo_class           - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
 #   $io_compression_codecs                    - A list of the compression codec classes that can be used for compression/decompression.
+#   $azkaban_enabled                          - Set to true if you need integrate Hadoop with Azkaban.  Default: false.
 #
 class cdh::hadoop(
     $namenode_hosts,
@@ -162,6 +163,7 @@ class cdh::hadoop(
     $lzo_enabled                                 = $::cdh::hadoop::defaults::lzo_enabled,
     $io_compression_codec_lzo_class              = $::cdh::hadoop::defaults::io_compression_codec_lzo_class,
     $io_compression_codecs                       = $::cdh::hadoop::defaults::io_compression_codecs,
+    $azkaban_enabled                             = $::cdh::hadoop::defaults::azkaban_enabled,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the

@@ -52,6 +52,18 @@
   </property>
 <% end -%>
 
+<% if @azkaban_enabled -%>
+  <!-- Azkaban proxy user -->
+  <property>
+    <name>hadoop.proxyuser.azkaban.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.azkaban.groups</name>
+    <value>*</value>
+  </property>
+<% end -%>
+
   <!-- mapred proxy user -->
   <property>
     <name>hadoop.proxyuser.mapred.hosts</name>

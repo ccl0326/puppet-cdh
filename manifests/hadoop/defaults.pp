@@ -74,4 +74,6 @@ class cdh::hadoop::defaults {
     $resourcemanager_jmxremote_port    = 9983
     $nodemanager_jmxremote_port        = 9984
     $proxyserver_jmxremote_port        = 9985
+
+    $azkaban_enabled = false
 }
