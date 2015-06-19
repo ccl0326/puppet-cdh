@@ -42,7 +42,13 @@
     <value><%= @zookeeper_hosts.sort.join(',') %></value>
   </property>
 <% end -%>
-<% if @hbase_regionserver_codecs %>
+<% if @zookeeper_session_timeout -%>
+  <property>
+    <name>zookeeper.session.timeout</name>
+    <value><%= @zookeeper_session_timeout %></value>
+  </property>
+<% end -%>
+<% if @hbase_regionserver_codecs -%>
   <property>
     <name>hbase.regionserver.codecs</name>
     <value><%= @hbase_regionserver_codecs.sort.join(',') %></value>

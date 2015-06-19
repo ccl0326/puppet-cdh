@@ -19,6 +19,9 @@
 # [*zookeeper_znode_parent*]
 #   Root ZNode for HBase in ZooKeeper. Default: /hbase
 #
+# [*zookeeper_session_timeout*]
+#   ZooKeeper session timeout in milliseconds. Default: undef
+#
 # [*hbase_regionserver_codecs*]
 #   compression codecs check
 #
@@ -55,6 +58,7 @@ class cdh::hbase(
   $version                        = $cdh::hbase::defaults::version,
   $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
   $zookeeper_znode_parent         = $cdh::hbase::defaults::zookeeper_znode_parent,
+  $zookeeper_session_timeout      = $cdh::hbase::defaults::zookeeper_session_timeout,
   $hbase_regionserver_codecs      = $cdh::hbase::defaults::hbase_regionserver_codecs,
   $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
   $hadoop_metrics2_hbase_template = $cdh::hbase::defaults::hadoop_metrics2_hbase_template,
