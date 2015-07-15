@@ -58,6 +58,8 @@
 # $hbase_clusters         - Comma-separated list of HBase Thrift servers for clusters
 #                           in the format of '(name|host:port)'.  Default: undef
 #
+# $zookeeper_hosts        - Array of ZooKeeper hostname/IP(:port)s.  Default: undef
+#
 # === LDAP parameters:
 # See hue.ini comments for documentation.  By default these are undefined.
 #
@@ -125,7 +127,9 @@ class cdh::hue(
     $hue_log4j_template       = $cdh::hue::defaults::hue_log4j_template,
     $hue_log_conf_template    = $cdh::hue::defaults::hue_log_conf_template,
 
-    $hbase_clusters           = $cdh::hue::defaults::hbase_clusters
+    $hbase_clusters           = $cdh::hue::defaults::hbase_clusters,
+
+    $zookeeper_hosts          = $cdh::hue::defaults::zookeeper_hosts
 ) inherits cdh::hue::defaults
 {
     Class['cdh::hadoop'] -> Class['cdh::hue']

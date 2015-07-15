@@ -74,4 +74,6 @@ class cdh::hue::defaults {
     $hue_log_conf_template    = 'cdh/hue/log.conf.erb'
 
     $hbase_clusters           = undef
+
+    $zookeeper_hosts          = undef
 }
