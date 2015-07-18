@@ -3,5 +3,6 @@
 # Default Impala configs
 #
 class cdh::impala::defaults {
-  $version = 'installed'
+  $version     = 'installed'
+  $cgroup_path = '/sys/fs/cgroup/impala'
 }

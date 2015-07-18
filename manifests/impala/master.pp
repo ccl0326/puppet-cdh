@@ -1,6 +1,7 @@
 # == Class: cdh::impala::master
 #
-# Installs impala-state-store and impala-catalog.
+# Installs impala master services.
+# This assumes you want to run state-store, catalog, and llama on the same node.
 #
 # === Examples
 #

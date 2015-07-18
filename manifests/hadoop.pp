@@ -31,9 +31,13 @@
 #                                      ignored if $ha_enabled is false.
 #
 #   $short_circuit_reads_enabled     - Set to true if your need enable
-#                                      short-circuit local reads.  Default: false
+#                                      short-circuit local reads.
+#                                      This is required if you want to
+#                                      use Impala.  Default: false
 #   $block_location_tracking_enabled - Set to true if your need enable block
-#                                      location tracking.  Default: false
+#                                      location tracking.
+#                                      This is required if you want to
+#                                      use Impala.  Default: false
 #   $azkaban_enabled                 - Set to true if you need integrate Hadoop
 #                                      with Azkaban (will set azkaban as Hadoop
 #                                      proxy user and group).  Default: false.
@@ -248,6 +252,23 @@ class cdh::hadoop(
         }
     }
 
+    $fair_scheduler_enabled = $fair_scheduler_template ? {
+        undef   => false,
+        false   => false,
+        default => true
+    }
+    $fair_scheduler_allocation_file_ensure = $fair_scheduler_enabled ? {
+        true  => 'present',
+        false => 'absent'
+    }
+    # FairScheduler can be enabled
+    # and this file will be used to configure
+    # FairScheduler queues.
+    file { "${config_directory}/fair-scheduler.xml":
+        ensure  => $fair_scheduler_allocation_file_ensure,
+        content => template($fair_scheduler_template)
+    }
+
     # If lzo_enabled set, LZO class will be add to io_compression_codecs
     if $lzo_enabled and (! member($io_compression_codecs, 'com.hadoop.compression.lzo.LzoCodec')) {
         $new_io_compression_codecs = concat($io_compression_codecs, ['com.hadoop.compression.lzo.LzoCodec', 'com.hadoop.compression.lzo.LzopCodec'])
@@ -281,15 +302,6 @@ class cdh::hadoop(
 
     file { "${config_directory}/yarn-env.sh":
         content => template('cdh/hadoop/yarn-env.sh.erb'),
-    }
-
-    # If this is set, FairScheduler will be enabled
-    # and this file will be used to configure
-    # FairScheduler queues.
-    if $fair_scheduler_template {
-        file { "${config_directory}/fair-scheduler.xml":
-            content => template($fair_scheduler_template),
-        }
     }
 
     # Render hadoop-metrics2.properties

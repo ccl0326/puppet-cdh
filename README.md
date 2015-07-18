@@ -309,22 +309,20 @@ Then restart all DataNodes.
 
 ```puppet
 class { 'cdh::impala':
-  state_store_host     => 'impala-state-store-node.domain.org',
-  catalog_service_host => 'impala-catalog-node.domain.org',
-  version              => '2.2.0+cdh5.4.2+0-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
+  master_host => 'impala-master-node.domain.org',
+  version     => '2.2.0+cdh5.4.2+0-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
 }
 include cdh::impala::master
 ```
 
-## Impala Slave (impala-server)
+## Impala Workers (impala-server)
 
 ```puppet
 class { 'cdh::impala':
-  state_store_host     => 'impala-state-store-node.domain.org',
-  catalog_service_host => 'impala-catalog-node.domain.org',
-  version              => '2.2.0+cdh5.4.2+0-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
+  master_host => 'impala-master-node.domain.org',
+  version     => '2.2.0+cdh5.4.2+0-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
 }
-include cdh::impala::slave
+include cdh::impala::worker
 ```
 
 
