@@ -9,7 +9,7 @@ NOTE: The main puppet-cdh repository is hosted in WMF Gerrit at
 [operations/puppet/cdh](https://gerrit.wikimedia.org/r/#/admin/projects/operations/puppet/cdh).
 
 
-Installs HDFS, YARN, Hive, Pig, Sqoop (1), Oozie,
+Installs HDFS, YARN, Hive, Impala, Pig, Sqoop (1), Oozie,
 Hue and HBase.  Note that, in order for this module to work, you will have to ensure
 that:
 
@@ -24,24 +24,20 @@ that:
   make config changes in puppet, you must apply puppet and then manually restart
   the relevant services.
 - This module has only been tested using CDH 5.0.1 on Ubuntu Precise 12.04.2 LTS
-- Zookeeper is not puppetized in this module, as Debian/Ubuntu provides
-  a different and suitable Zookeeper package.  To puppetize Zookeeper Servers,
+- ZooKeeper is not puppetized in this module, as Debian/Ubuntu provides
+  a different and suitable ZooKeeper package.  To puppetize ZooKeeper Servers,
   See the [puppet-zookeeper](https://github.com/wikimedia/puppet-zookeeper) module.
 
 
 # Installation
 
-Clone (or copy) this repository into your puppet modules/cdh directory:
-```bash
-git clone git://github.com/wikimedia/puppet-cdh.git modules/cdh
+Update your `Puppetfile` with these lines:
+
+```
+mod "cdh",
+  :git => "https://github.com/zhihu/puppet-cdh.git"
 ```
 
-Or you could also use a git submodule:
-```bash
-git submodule add git://github.com/wikimedia/puppet-cdh.git modules/cdh
-git commit -m 'Adding modules/cdh as a git submodule.'
-git submodule init && git submodule update
-```
 
 # Hadoop
 
@@ -140,7 +136,6 @@ You'll need to set two extra parameters on the ```cdh::hadoop``` class on all
 your hadoop nodes, as well as specify the hosts of your standby NameNodes.
 
 ```puppet
-
 class my::hadoop {
   class { 'cdh::hadoop':
     cluster_name      => 'mycluster',
@@ -290,6 +285,7 @@ class { 'cdh::hive::master':
   metastore_database => undef,
 }
 ```
+
 
 # Oozie
 
