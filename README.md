@@ -305,7 +305,9 @@ class { 'cdh::hadoop':
 
 Then restart all DataNodes.
 
-## Impala Master (impala-state-store and impala-catalog)
+## Impala Master
+
+This assumes you want to run state-store, catalog, and llama on the same node.
 
 ```puppet
 class { 'cdh::impala':
