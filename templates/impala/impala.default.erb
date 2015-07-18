@@ -23,12 +23,6 @@ IMPALA_SERVER_ARGS=" \
     -llama_host=<%= @master_host %> \
     -cgroup_hierarchy_path=<%= @cgroup_path %> \
     -local_nodemanager_url=http://127.0.0.1:8042 \
-<%
-# Default to asking for 1 core (instead of 2) if running with only one core.
-# This helps in development environments.
-if @processorcount == 1 %>
-    -rm_default_cpu_vcores=1 \
-<% end %>
     -rm_always_use_defaults<% if not @fair_scheduler_enabled %>"<% else %> \
     -fair_scheduler_allocation_path=/etc/hadoop/conf/fair-scheduler.xml"<% end %>
 
