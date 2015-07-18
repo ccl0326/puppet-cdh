@@ -12,7 +12,7 @@ class cdh::impala::master {
   Class['cdh::impala'] -> Class['cdh::impala::master']
 
   include cdh::impala::defaults
-  package { ['impala-state-store', 'impala-catalog']:
+  package { ['impala-state-store', 'impala-catalog', 'llama-master']:
     ensure => $cdh::impala::defaults::version
   }
   service { 'impala-state-store':
@@ -28,5 +28,12 @@ class cdh::impala::master {
     hasrestart => true,
     hasstatus  => true,
     require    => Package['impala-catalog']
+  }
+  service { 'llama':
+    ensure     => 'running',
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+    require    => Package['llama-master']
   }
 }
