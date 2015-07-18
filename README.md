@@ -298,7 +298,7 @@ reads](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/Sho
 class { 'cdh::hadoop':
   ...
   short_circuit_reads_enabled     => true,
-  block_location_tracking_enabled => true
+  block_location_tracking_enabled => true,
   ...
 }
 ```
