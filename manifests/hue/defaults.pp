@@ -7,6 +7,12 @@ class cdh::hue::defaults {
     $app_blacklist            = ['hbase', 'impala', 'search', 'spark', 'rdbms', 'zookeeper']
 
     $hive_server_host         = undef
+    $hive_server_conn_timeout = undef
+    $hive_download_row_limit  = undef
+
+    $impala_server_host           = undef
+    $impala_server_conn_timeout   = undef
+    $impala_impersonation_enabled = undef
 
     $db_engine                = 'sqlite3'
     $jdbc_database            = '/var/lib/hue/desktop.db'

@@ -9,13 +9,22 @@
 # with hive and oozie.
 #
 # == Parameters
-# $http_host              - IP for webservice to bind.
-# $http_port              - Port for webservice to bind.
-# $secret_key             - Secret key used for session hashing.
-# $app_blacklist          - Array of application names that Hue should not load.
-#                           Default: hbase, impala, search, spark, rdbms, zookeeper
 #
-# $hive_server_host       - FQDN of host running hive-server2
+# $http_host                    - IP for webservice to bind.
+# $http_port                    - Port for webservice to bind.
+# $secret_key                   - Secret key used for session hashing.
+# $app_blacklist                - Array of application names that Hue should not load.
+#                                 Default: hbase, impala, search, spark, rdbms, zookeeper
+#
+# $hive_server_host             - FQDN of host running hive-server2
+# $hive_server_conn_timeout     - Timeout in seconds for Thrift calls to Hive service.  Default: undef
+# $hive_download_row_limit      - A limit to the number of rows that can be downloaded from a query.
+#                                 A value of -1 means there will be no limit.
+#                                 A maximum of 65,000 is applied to XLS downloads.  Default: undef
+#
+# $impala_server_host           - Host of the Impala Server (one of the Impalad).  Default: undef
+# $impala_server_conn_timeout   - Timeout in seconds for Thrift calls.  Default: undef
+# $impala_impersonation_enabled - Turn on/off impersonation mechanism when talking to Impala.  Default: undef
 #
 # $db_engine              - Engine. Default: sqlite3
 # $jdbc_database          - Metastore JDBC database name.
@@ -25,8 +34,6 @@
 # $jdbc_host              - Metastore JDBC hostname.  Default: localhost
 # $jdbc_port              - Metastore JDBC port.      Default: 3306
 # $jdbc_driver            - Metastore JDBC driver class name.
-#
-#
 #
 # $oozie_url              - URL for Oozie API.  If cdh::oozie is included,
 #                           this will be inferred.  Else this will be disabled.
@@ -61,6 +68,7 @@
 # $zookeeper_hosts        - Array of ZooKeeper hostname/IP(:port)s.  Default: undef
 #
 # === LDAP parameters:
+#
 # See hue.ini comments for documentation.  By default these are undefined.
 #
 # $ldap_url
@@ -77,59 +85,64 @@
 # $ldap_group_member_attr
 #
 class cdh::hue(
-    $http_host                = $cdh::hue::defaults::http_host,
-    $http_port                = $cdh::hue::defaults::http_port,
-    $secret_key               = $cdh::hue::defaults::secret_key,
-    $app_blacklist            = $cdh::hue::defaults::app_blacklist,
+    $http_host                    = $cdh::hue::defaults::http_host,
+    $http_port                    = $cdh::hue::defaults::http_port,
+    $secret_key                   = $cdh::hue::defaults::secret_key,
+    $app_blacklist                = $cdh::hue::defaults::app_blacklist,
 
-    $hive_server_host         = $cdh::hue::defaults::hive_server_host,
+    $hive_server_host             = $cdh::hue::defaults::hive_server_host,
+    $hive_server_conn_timeout     = $cdh::hue::defaults::hive_server_conn_timeout,
+    $hive_download_row_limit      = $cdh::hue::defaults::hive_download_row_limit,
 
-    $db_engine                = $cdh::hue::defaults::db_engine,
-    $jdbc_database            = $cdh::hue::defaults::jdbc_database,
-    $jdbc_username            = $cdh::hue::defaults::jdbc_username,
-    $jdbc_password            = $cdh::hue::defaults::jdbc_password,
-    $jdbc_host                = $cdh::hue::defaults::jdbc_password,
-    $jdbc_port                = $cdh::hue::defaults::jdbc_port,
+    $impala_server_host           = $cdh::hue::defaults::impala_server_host,
+    $impala_impersonation_enabled = $cdh::hue::defaults::impala_impersonation_enabled,
 
-    $timezone                 = $cdh::hue::defaults::timezone,
-    $oozie_url                = $cdh::hue::defaults::oozie_url,
-    $oozie_security_enabled   = $cdh::hue::defaults::oozie_security_enabled,
+    $db_engine                    = $cdh::hue::defaults::db_engine,
+    $jdbc_database                = $cdh::hue::defaults::jdbc_database,
+    $jdbc_username                = $cdh::hue::defaults::jdbc_username,
+    $jdbc_password                = $cdh::hue::defaults::jdbc_password,
+    $jdbc_host                    = $cdh::hue::defaults::jdbc_password,
+    $jdbc_port                    = $cdh::hue::defaults::jdbc_port,
 
-    $proxy_whitelist          = $cdh::hue::defaults::proxy_whitelist,
-    $proxy_blacklist          = $cdh::hue::defaults::proxy_blacklist,
+    $timezone                     = $cdh::hue::defaults::timezone,
+    $oozie_url                    = $cdh::hue::defaults::oozie_url,
+    $oozie_security_enabled       = $cdh::hue::defaults::oozie_security_enabled,
 
-    $smtp_host                = $cdh::hue::defaults::smtp_host,
-    $smtp_port                = $cdh::hue::defaults::smtp_port,
-    $smtp_user                = $cdh::hue::defaults::smtp_user,
-    $smtp_password            = $cdh::hue::defaults::smtp_password,
-    $smtp_from_email          = $cdh::hue::defaults::smtp_from_email,
+    $proxy_whitelist              = $cdh::hue::defaults::proxy_whitelist,
+    $proxy_blacklist              = $cdh::hue::defaults::proxy_blacklist,
 
-    $django_admin_name        = $cdh::hue::defaults::django_admin_name,
-    $django_admin_email       = $cdh::hue::defaults::django_admin_email,
+    $smtp_host                    = $cdh::hue::defaults::smtp_host,
+    $smtp_port                    = $cdh::hue::defaults::smtp_port,
+    $smtp_user                    = $cdh::hue::defaults::smtp_user,
+    $smtp_password                = $cdh::hue::defaults::smtp_password,
+    $smtp_from_email              = $cdh::hue::defaults::smtp_from_email,
 
-    $ssl_private_key          = $cdh::hue::defaults::ssl_private_key,
-    $ssl_certificate          = $cdh::hue::defaults::ssl_certificate,
+    $django_admin_name            = $cdh::hue::defaults::django_admin_name,
+    $django_admin_email           = $cdh::hue::defaults::django_admin_email,
 
-    $ldap_url                 = $cdh::hue::defaults::ldap_url,
-    $ldap_cert                = $cdh::hue::defaults::ldap_cert,
-    $ldap_nt_domain           = $cdh::hue::defaults::ldap_nt_domain,
-    $ldap_bind_dn             = $cdh::hue::defaults::ldap_bind_dn,
-    $ldap_base_dn             = $cdh::hue::defaults::ldap_base_dn,
-    $ldap_bind_password       = $cdh::hue::defaults::ldap_bind_password,
-    $ldap_username_pattern    = $cdh::hue::defaults::ldap_username_pattern,
-    $ldap_user_filter         = $cdh::hue::defaults::ldap_user_filter,
-    $ldap_user_name_attr      = $cdh::hue::defaults::ldap_user_name_attr,
-    $ldap_group_filter        = $cdh::hue::defaults::ldap_group_filter,
-    $ldap_group_name_attr     = $cdh::hue::defaults::ldap_group_name_attr,
-    $ldap_group_member_attr   = $cdh::hue::defaults::ldap_group_member_attr,
+    $ssl_private_key              = $cdh::hue::defaults::ssl_private_key,
+    $ssl_certificate              = $cdh::hue::defaults::ssl_certificate,
 
-    $hue_ini_template         = $cdh::hue::defaults::hue_ini_template,
-    $hue_log4j_template       = $cdh::hue::defaults::hue_log4j_template,
-    $hue_log_conf_template    = $cdh::hue::defaults::hue_log_conf_template,
+    $ldap_url                     = $cdh::hue::defaults::ldap_url,
+    $ldap_cert                    = $cdh::hue::defaults::ldap_cert,
+    $ldap_nt_domain               = $cdh::hue::defaults::ldap_nt_domain,
+    $ldap_bind_dn                 = $cdh::hue::defaults::ldap_bind_dn,
+    $ldap_base_dn                 = $cdh::hue::defaults::ldap_base_dn,
+    $ldap_bind_password           = $cdh::hue::defaults::ldap_bind_password,
+    $ldap_username_pattern        = $cdh::hue::defaults::ldap_username_pattern,
+    $ldap_user_filter             = $cdh::hue::defaults::ldap_user_filter,
+    $ldap_user_name_attr          = $cdh::hue::defaults::ldap_user_name_attr,
+    $ldap_group_filter            = $cdh::hue::defaults::ldap_group_filter,
+    $ldap_group_name_attr         = $cdh::hue::defaults::ldap_group_name_attr,
+    $ldap_group_member_attr       = $cdh::hue::defaults::ldap_group_member_attr,
 
-    $hbase_clusters           = $cdh::hue::defaults::hbase_clusters,
+    $hue_ini_template             = $cdh::hue::defaults::hue_ini_template,
+    $hue_log4j_template           = $cdh::hue::defaults::hue_log4j_template,
+    $hue_log_conf_template        = $cdh::hue::defaults::hue_log_conf_template,
 
-    $zookeeper_hosts          = $cdh::hue::defaults::zookeeper_hosts
+    $hbase_clusters               = $cdh::hue::defaults::hbase_clusters,
+
+    $zookeeper_hosts              = $cdh::hue::defaults::zookeeper_hosts
 ) inherits cdh::hue::defaults
 {
     Class['cdh::hadoop'] -> Class['cdh::hue']
