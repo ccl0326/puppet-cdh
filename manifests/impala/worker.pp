@@ -13,17 +13,21 @@ class cdh::impala::worker {
 
   include cdh::impala::defaults
 
-  # Create a path in which to store CGroups for Impala.
-  file { "$cdh::impala::defaults::cgroup_path":
-    ensure  => 'directory',
-    owner   => 'impala',
-    group   => 'impala',
-    require => Package['impala-server']
-  }
-
   package { 'impala-server':
     ensure => $cdh::impala::defaults::version
   }
+
+  # Installing cgroup-bin to have cgroups mounted in /sys/fs/cgroup
+  # and allow us to use cgcreate to create a CPU cgroup for Impala.
+  package { 'cgroup-bin':
+    ensure => 'installed'
+  }
+  exec { 'cgroup-create-impala':
+    command => '/usr/bin/cgcreate -a impala:impala -t impala:impala -g cpu:impala',
+    creates => "${cdh::impala::defaults::cgroup_path}/tasks",
+    require => [Package['impala-server'], Package['cgroup-bin']]
+  }
+
   service { 'impala-server':
     ensure     => 'running',
     enable     => true,
@@ -31,7 +35,7 @@ class cdh::impala::worker {
     hasstatus  => true,
     require    => [
       Package['impala-server'],
-      File["$cdh::impala::defaults::cgroup_path"]
+      Exec['cgroup-create-impala']
     ]
   }
 }
