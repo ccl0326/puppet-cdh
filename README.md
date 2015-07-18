@@ -263,7 +263,7 @@ with dot ('.') characters replaced with dashes ('-').  E.g.  ```namenode1-domain
 class { 'cdh::hive':
   metastore_host  => 'hive-metastore-node.domain.org',
   zookeeper_hosts => ['zk1.domain.org', 'zk2.domain.org'],
-  jdbc_password   => $secret_password,
+  jdbc_password   => $secret_password
 }
 ```
 
@@ -272,7 +272,7 @@ class { 'cdh::hive':
 Include the same ```cdh::hive``` class as indicated above, and then:
 
 ```puppet
-class { 'cdh::hive::master': }
+include cdh::hive::master
 ```
 
 By default, a Hive metastore backend MySQL database will be used.  You must
@@ -282,8 +282,49 @@ database, set the ```metastore_database``` parameter to undef:
 
 ```puppet
 class { 'cdh::hive::master':
-  metastore_database => undef,
+  metastore_database => undef
 }
+```
+
+
+# Impala
+
+## Requirement
+
+You need enable HDFS [short-circuit local
+reads](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/ShortCircuitLocalReads.html) and [block location tracking](http://www.cloudera.com/content/cloudera/en/documentation/cloudera-impala/latest/topics/impala_config_performance.html?scroll=config_performance__block_location_tracking) first.
+
+```puppet
+class { 'cdh::hadoop':
+  ...
+  short_circuit_reads_enabled     => true,
+  block_location_tracking_enabled => true
+  ...
+}
+```
+
+Then restart all DataNodes.
+
+## Impala Master (impala-state-store and impala-catalog)
+
+```puppet
+class { 'cdh::impala':
+  state_store_host     => 'impala-state-store-node.domain.org',
+  catalog_service_host => 'impala-catalog-node.domain.org',
+  version              => '2.2.0+cdh5.4.2+0-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
+}
+include cdh::impala::master
+```
+
+## Impala Slave (impala-server)
+
+```puppet
+class { 'cdh::impala':
+  state_store_host     => 'impala-state-store-node.domain.org',
+  catalog_service_host => 'impala-catalog-node.domain.org',
+  version              => '2.2.0+cdh5.4.2+0-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
+}
+include cdh::impala::slave
 ```
 
 
@@ -292,7 +333,7 @@ class { 'cdh::hive::master':
 ## Oozie Clients
 
 ```puppet
-class { 'cdh::oozie': }
+include cdh::oozie
 ```
 
 ## Oozie Server
@@ -305,19 +346,19 @@ Oozie database manually.
 
 ```puppet
 class { 'cdh::oozie::server:
-  jdbc_password -> $secret_password,
+  jdbc_password -> $secret_password
 }
 ```
 
 
 # Hue
 
-To install hue server, simply:
+To install Hue server, simply:
 
 ```puppet
 class { 'cdh::hue':
   secret_key       => 'ii7nnoCGtP0wjub6nqnRfQx93YUV3iWG',  # your secret key here.
-  hive_server_host => 'hive.example.com',
+  hive_server_host => 'hive.example.com'
 }
 ```
 
@@ -330,10 +371,10 @@ Hue will be configured to run its Hive and Oozie apps.
 
 # HBase
 
-Install HBase Master:
+## HBase Master
 
 ```puppet
-$hbase_version = '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
+$hbase_version = '1.0.0+cdh5.4.2+142-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
 class { 'cdh::hbase':
   version         => $hbase_version,
   namenode_host   => 'namenode.domain.org',
@@ -348,10 +389,10 @@ class { 'cdh::hbase::master':
 }
 ```
 
-Install HBase RegionServer and Thrift server (typically on all of the slave nodes in a cluster):
+## HBase Slave (RegionServer and Thrift server)
 
 ```puppet
-$hbase_version = '0.98.6+cdh5.2.0+55-1.cdh5.2.0.p0.33~precise-cdh5.2.0'
+$hbase_version = '1.0.0+cdh5.4.2+142-1.cdh5.4.2.p0.4~wheezy-cdh5.4.2'
 class { 'cdh::hbase':
   version                   => $hbase_version,
   namenode_host             => 'namenode.domain.org',

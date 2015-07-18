@@ -7,6 +7,11 @@ class cdh::hadoop::defaults {
     $journalnode_hosts                        = undef
     $dfs_journalnode_edits_dir                = undef
 
+    $short_circuit_reads_enabled              = false
+    $dfs_domain_socket_path                   = '/var/run/hdfs-sockets/dn'
+    $block_location_tracking_enabled          = false
+    $azkaban_enabled                          = false
+
     $datanode_mounts                          = undef
     $dfs_data_path                            = 'hdfs/dn'
     $yarn_local_path                          = 'yarn/local'
@@ -74,6 +79,4 @@ class cdh::hadoop::defaults {
     $resourcemanager_jmxremote_port    = 9983
     $nodemanager_jmxremote_port        = 9984
     $proxyserver_jmxremote_port        = 9985
-
-    $azkaban_enabled = false
 }

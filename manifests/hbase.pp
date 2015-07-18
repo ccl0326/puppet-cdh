@@ -6,11 +6,11 @@
 #
 # === Parameters
 #
-# [*version*]
-#   hbase package version number. Default: installed
-#
 # [*namenode_host*]
 #   NameNode hostname
+#
+# [*version*]
+#   hbase package version number. Default: installed
 #
 # [*zookeeper_hosts*]
 #   Array of ZooKeeper hostname/IP(:port)s. Default: undef (HBase will run
@@ -55,16 +55,16 @@
 #
 class cdh::hbase(
   $namenode_host,
-  $version                        = $cdh::hbase::defaults::version,
-  $zookeeper_hosts                = $cdh::hbase::defaults::zookeeper_hosts,
-  $zookeeper_znode_parent         = $cdh::hbase::defaults::zookeeper_znode_parent,
-  $zookeeper_session_timeout      = $cdh::hbase::defaults::zookeeper_session_timeout,
-  $hbase_regionserver_codecs      = $cdh::hbase::defaults::hbase_regionserver_codecs,
-  $hbase_site_template            = $cdh::hbase::defaults::hbase_site_template,
-  $hadoop_metrics2_hbase_template = $cdh::hbase::defaults::hadoop_metrics2_hbase_template,
-  $hbase_env_template             = $cdh::hbase::defaults::hbase_env_template,
-  $hbase_policy_template          = $cdh::hbase::defaults::hbase_policy_template,
-  $log4j_template                 = $cdh::hbase::defaults::log4j_template
+  $version                        = $::cdh::hbase::defaults::version,
+  $zookeeper_hosts                = $::cdh::hbase::defaults::zookeeper_hosts,
+  $zookeeper_znode_parent         = $::cdh::hbase::defaults::zookeeper_znode_parent,
+  $zookeeper_session_timeout      = $::cdh::hbase::defaults::zookeeper_session_timeout,
+  $hbase_regionserver_codecs      = $::cdh::hbase::defaults::hbase_regionserver_codecs,
+  $hbase_site_template            = $::cdh::hbase::defaults::hbase_site_template,
+  $hadoop_metrics2_hbase_template = $::cdh::hbase::defaults::hadoop_metrics2_hbase_template,
+  $hbase_env_template             = $::cdh::hbase::defaults::hbase_env_template,
+  $hbase_policy_template          = $::cdh::hbase::defaults::hbase_policy_template,
+  $log4j_template                 = $::cdh::hbase::defaults::log4j_template
 ) inherits cdh::hbase::defaults {
   Class['cdh::hadoop'] -> Class['cdh::hbase']
 

@@ -12,32 +12,41 @@
 # yarn.nodemanager.log-dirs will be set to each of ${dfs_data_dir_mounts}/$yarn_logs_path
 #
 # == Parameters
-#   $namenode_hosts             - Array of NameNode host(s).  The first entry in this
-#                                 array will be the primary NameNode.  The primary NameNode
-#                                 will also be used as the host for the historyserver, proxyserver,
-#                                 and resourcemanager.   Use multiple hosts hosts if you
-#                                 configuring Hadoop with HA NameNodes.
-#   $dfs_name_dir               - Path to hadoop NameNode name directory.  This
-#                                 can be an array of paths or a single string path.
-#   $cluster_name               - Arbitrary logical HDFS cluster name.  This will be used
-#                                 as the nameserivce id if you set $ha_enabled to true.
-#                                 Default: 'cdh'.
-#   $mapreduce_enabled          - Set to false if you doesn't need setup MapReduce (YARN or MRv1), i.e. only HDFS installed.  Default: true.
-#   $journalnode_hosts          - Array of JournalNode hosts.  If this is provided,
-#                                 Hadoop will be configured to expect to have
-#                                 a primary NameNode as well as at least
-#                                 one Standby NameNode for use in high availibility mode.
-#   $dfs_journalnode_edits_dir  - Path to JournalNode edits dir.  This will be
-#                                 ignored if $ha_enabled is false.
-#   $datanode_mounts            - Array of JBOD mount points.  Hadoop datanode and
-#                                 mapreduce/yarn directories will be here.
-#   $dfs_data_path              - Path relative to JBOD mount point for HDFS data directories.
-#   $enable_jmxremote           - enables remote JMX connections for all Hadoop services.
-#                                 Ports are not currently configurable.  Default: true.
-#   $yarn_local_path            - Path relative to JBOD mount point for yarn local directories.
-#   $yarn_logs_path             - Path relative to JBOD mount point for yarn log directories.
-#   $dfs_block_size             - HDFS block size in bytes.  Default 64MB.
-#   $balance_speed              - HDFS balance band width Per Sec, type: byte.
+#   $namenode_hosts                  - Array of NameNode host(s).  The first entry in this
+#                                      array will be the primary NameNode.  The primary NameNode
+#                                      will also be used as the host for the historyserver, proxyserver,
+#                                      and resourcemanager.   Use multiple hosts hosts if you
+#                                      configuring Hadoop with HA NameNodes.
+#   $dfs_name_dir                    - Path to hadoop NameNode name directory.  This
+#                                      can be an array of paths or a single string path.
+#   $cluster_name                    - Arbitrary logical HDFS cluster name.  This will be used
+#                                      as the nameserivce id if you set $ha_enabled to true.
+#                                      Default: 'cdh'.
+#   $mapreduce_enabled               - Set to false if you doesn't need setup MapReduce (YARN or MRv1), i.e. only HDFS installed.  Default: true.
+#   $journalnode_hosts               - Array of JournalNode hosts.  If this is provided,
+#                                      Hadoop will be configured to expect to have
+#                                      a primary NameNode as well as at least
+#                                      one Standby NameNode for use in high availibility mode.
+#   $dfs_journalnode_edits_dir       - Path to JournalNode edits dir.  This will be
+#                                      ignored if $ha_enabled is false.
+#
+#   $short_circuit_reads_enabled     - Set to true if your need enable
+#                                      short-circuit local reads.  Default: false
+#   $block_location_tracking_enabled - Set to true if your need enable block
+#                                      location tracking.  Default: false
+#   $azkaban_enabled                 - Set to true if you need integrate Hadoop
+#                                      with Azkaban (will set azkaban as Hadoop
+#                                      proxy user and group).  Default: false.
+#
+#   $datanode_mounts                 - Array of JBOD mount points.  Hadoop datanode and
+#                                      mapreduce/yarn directories will be here.
+#   $dfs_data_path                   - Path relative to JBOD mount point for HDFS data directories.
+#   $enable_jmxremote                - enables remote JMX connections for all Hadoop services.
+#                                      Ports are not currently configurable.  Default: true.
+#   $yarn_local_path                 - Path relative to JBOD mount point for yarn local directories.
+#   $yarn_logs_path                  - Path relative to JBOD mount point for yarn log directories.
+#   $dfs_block_size                  - HDFS block size in bytes.  Default 64MB.
+#   $balance_speed                   - HDFS balance band width Per Sec, type: byte.
 #   $io_file_buffer_size
 #   $map_tasks_maximum
 #   $reduce_tasks_maximum
@@ -103,7 +112,6 @@
 #   $lzo_enabled                              - Set true when you add LZO compress.
 #   $io_compression_codec_lzo_class           - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
 #   $io_compression_codecs                    - A list of the compression codec classes that can be used for compression/decompression.
-#   $azkaban_enabled                          - Set to true if you need integrate Hadoop with Azkaban.  Default: false.
 #
 class cdh::hadoop(
     $namenode_hosts,
@@ -112,6 +120,10 @@ class cdh::hadoop(
     $mapreduce_enabled                           = $::cdh::hadoop::defaults::mapreduce_enabled,
     $journalnode_hosts                           = $::cdh::hadoop::defaults::journalnode_hosts,
     $dfs_journalnode_edits_dir                   = $::cdh::hadoop::defaults::dfs_journalnode_edits_dir,
+
+    $short_circuit_reads_enabled                 = $::cdh::hadoop::defaults::short_circuit_reads_enabled,
+    $block_location_tracking_enabled             = $::cdh::hadoop::defaults::block_location_tracking_enabled,
+    $azkaban_enabled                             = $::cdh::hadoop::defaults::azkaban_enabled,
 
     $datanode_mounts                             = $::cdh::hadoop::defaults::datanode_mounts,
     $dfs_data_path                               = $::cdh::hadoop::defaults::dfs_data_path,
@@ -163,7 +175,6 @@ class cdh::hadoop(
     $lzo_enabled                                 = $::cdh::hadoop::defaults::lzo_enabled,
     $io_compression_codec_lzo_class              = $::cdh::hadoop::defaults::io_compression_codec_lzo_class,
     $io_compression_codecs                       = $::cdh::hadoop::defaults::io_compression_codecs,
-    $azkaban_enabled                             = $::cdh::hadoop::defaults::azkaban_enabled,
 ) inherits cdh::hadoop::defaults
 {
     # If $dfs_name_dir is a list, this will be the
@@ -300,5 +311,16 @@ class cdh::hadoop(
             ($::ipaddress      and $::ipaddress      in $journalnode_hosts) or
             ($::ipaddress_eth1 and $::ipaddress_eth1 in $journalnode_hosts))) {
         include cdh::hadoop::journalnode
+    }
+
+    # If short-circuit local reads is enabled, ensure domain
+    # socket path exists.
+    if $short_circuit_reads_enabled {
+        $dfs_domain_socket_path_parent = inline_template("<%= File.dirname('${dfs_domain_socket_path}') %>")
+        file { "$dfs_domain_socket_path_parent":
+            ensure => directory,
+            owner  => 'hdfs',
+            group  => 'hdfs'
+        }
     }
 }
