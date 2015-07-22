@@ -5,6 +5,7 @@ class cdh::hue::defaults {
     $http_port                = 8888
     $secret_key               = undef
     $app_blacklist            = ['hbase', 'impala', 'search', 'spark', 'rdbms', 'zookeeper']
+    $banner_top_html          = undef
 
     $hive_server_host         = undef
     $hive_server_conn_timeout = undef

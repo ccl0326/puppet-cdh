@@ -15,6 +15,7 @@
 # $secret_key                   - Secret key used for session hashing.
 # $app_blacklist                - Array of application names that Hue should not load.
 #                                 Default: hbase, impala, search, spark, rdbms, zookeeper
+# $banner_top_html              - Top banner HTML code.  Default: undef
 #
 # $hive_server_host             - FQDN of host running hive-server2
 # $hive_server_conn_timeout     - Timeout in seconds for Thrift calls to Hive service.  Default: undef
@@ -89,6 +90,7 @@ class cdh::hue(
     $http_port                    = $cdh::hue::defaults::http_port,
     $secret_key                   = $cdh::hue::defaults::secret_key,
     $app_blacklist                = $cdh::hue::defaults::app_blacklist,
+    $banner_top_html              = $cdh::hue::defaults::banner_top_html,
 
     $hive_server_host             = $cdh::hue::defaults::hive_server_host,
     $hive_server_conn_timeout     = $cdh::hue::defaults::hive_server_conn_timeout,
