@@ -51,6 +51,8 @@ class cdh::hadoop::defaults {
     $yarn_nodemanager_resource_memory_mb      = undef
     $yarn_scheduler_minimum_allocation_mb     = undef
     $yarn_scheduler_maximum_allocation_mb     = undef
+    $yarn_scheduler_minimum_allocation_vcores = undef
+    $yarn_scheduler_maximum_allocation_vcores = undef
 
     $fair_scheduler_template                  = 'cdh/hadoop/fair-scheduler.xml.erb'
     $fair_user_as_default_queue               = false
