@@ -102,6 +102,8 @@
 #                                               FairScheduler), you should also provide
 #                                               your own scheduler config .xml files
 #                                               outside of the cdh module.
+#   $yarn_aux_services_spark_shuffle_enabled  - If enable spark_shuffle service.  Default: false
+#
 #   $hadoop_heapsize                          - -Xmx for NameNode and DataNode.  Default: undef
 #   $yarn_heapsize                            - -Xmx for YARN Daemons.           Default: undef
 #   $ganglia_hosts                            - Set this to an array of ganglia host:ports
@@ -175,15 +177,20 @@ class cdh::hadoop(
     $yarn_scheduler_maximum_allocation_mb        = $::cdh::hadoop::defaults::yarn_scheduler_maximum_allocation_mb,
     $yarn_scheduler_minimum_allocation_vcores    = $::cdh::hadoop::defaults::yarn_scheduler_minimum_allocation_vcores,
     $yarn_scheduler_maximum_allocation_vcores    = $::cdh::hadoop::defaults::yarn_scheduler_maximum_allocation_vcores,
+    $yarn_aux_services_spark_shuffle_enabled     = $::cdh::hadoop::defaults::yarn_aux_services_spark_shuffle_enabled,
+
+    $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
+    $fair_user_as_default_queue                  = $::cdh::hadoop::defaults::fair_user_as_default_queue,
+
     $hadoop_heapsize                             = $::cdh::hadoop::defaults::hadoop_heapsize,
     $yarn_heapsize                               = $::cdh::hadoop::defaults::yarn_heapsize,
+
     $ganglia_hosts                               = $::cdh::hadoop::defaults::ganglia_hosts,
     $net_topology_script_template                = $::cdh::hadoop::defaults::net_topology_script_template,
     $gelf_logging_enabled                        = $::cdh::hadoop::defaults::gelf_logging_enabled,
     $gelf_logging_host                           = $::cdh::hadoop::defaults::gelf_logging_host,
     $gelf_logging_port                           = $::cdh::hadoop::defaults::gelf_logging_port,
-    $fair_scheduler_template                     = $::cdh::hadoop::defaults::fair_scheduler_template,
-    $fair_user_as_default_queue                  = $::cdh::hadoop::defaults::fair_user_as_default_queue,
+
     $hadoop_classpath                            = $::cdh::hadoop::defaults::hadoop_classpath,
     $java_library_path                           = $::cdh::hadoop::defaults::java_library_path,
     $lzo_enabled                                 = $::cdh::hadoop::defaults::lzo_enabled,

@@ -54,7 +54,7 @@
 
   <property>
     <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
+    <value>mapreduce_shuffle<% if @yarn_aux_services_spark_shuffle_enabled -%>,spark_shuffle<% end -%></value>
   </property>
 
   <property>
@@ -62,6 +62,12 @@
     <value>org.apache.hadoop.mapred.ShuffleHandler</value>
   </property>
 
+<% if @yarn_aux_services_spark_shuffle_enabled -%>
+  <property>
+    <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+    <value>org.apache.spark.network.yarn.YarnShuffleService</value>
+  </property>
+<% end -%>
 
 <% if @datanode_mounts -%>
   <property>
@@ -134,7 +140,6 @@
     <name>yarn.nodemanager.remote-app-log-dir</name>
     <value>/var/log/hadoop-yarn/apps</value>
   </property>
-
 
   <property>
       <name>yarn.app.mapreduce.am.staging-dir</name>
