@@ -56,6 +56,12 @@
     <value><%= @hbase_regionserver_codecs.sort.join(',') %></value>
   </property>
 <% end -%>
+<% if @hbase_regionserver_lease_period -%>
+  <property>
+    <name>hbase.regionserver.lease.period</name>
+    <value><%= @hbase_regionserver_lease_period %></value>
+  </property>
+<% end -%>
 
 <% if @hbase_client_scanner_caching -%>
   <property>

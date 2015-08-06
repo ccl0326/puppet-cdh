@@ -25,6 +25,9 @@
 # [*hbase_regionserver_codecs*]
 #   Compression codecs check
 #
+# [*hbase_regionserver_lease_period*]
+#   HRegion server lease period in milliseconds. Default: undef
+#
 # [*hbase_client_scanner_caching*]
 #   Number of rows that will be fetched when calling next on a scanner if
 #   it is not served from (local, client) memory. Default: undef
@@ -72,6 +75,7 @@ class cdh::hbase(
   $zookeeper_session_timeout            = $::cdh::hbase::defaults::zookeeper_session_timeout,
 
   $hbase_regionserver_codecs            = $::cdh::hbase::defaults::hbase_regionserver_codecs,
+  $hbase_regionserver_lease_period      = $::cdh::hbase::defaults::hbase_regionserver_lease_period,
 
   $hbase_client_scanner_caching         = $::cdh::hbase::defaults::hbase_client_scanner_caching,
   $hbase_client_scanner_timeout_period  = $::cdh::hbase::defaults::hbase_client_scanner_timeout_period,

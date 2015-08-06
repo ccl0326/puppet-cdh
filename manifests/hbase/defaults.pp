@@ -9,7 +9,8 @@ class cdh::hbase::defaults {
   $zookeeper_znode_parent    = '/hbase'
   $zookeeper_session_timeout = undef
 
-  $hbase_regionserver_codecs = undef
+  $hbase_regionserver_codecs       = undef
+  $hbase_regionserver_lease_period = undef
 
   $hbase_client_scanner_caching         = undef
   $hbase_client_scanner_timeout_period  = undef
