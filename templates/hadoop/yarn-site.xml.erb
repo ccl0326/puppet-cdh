@@ -17,7 +17,6 @@
     <name>yarn.resourcemanager.scheduler.class</name>
     <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
   </property>
-
   <property>
     <name>yarn.scheduler.fair.allocation.file</name>
     <value><%= @config_directory %>/fair-scheduler.xml</value>
@@ -27,7 +26,6 @@
       in XML format as described in the next section.
     </description>
   </property>
-
   <property>
     <name>yarn.scheduler.fair.user-as-default-queue</name>
     <value><%= @fair_user_as_default_queue %></value>
@@ -37,7 +35,30 @@
       or unset, all jobs have a shared default queue, called "default". Defaults to true.
     </description>
   </property>
-<% end -%>
+  <property>
+    <name>yarn.scheduler.fair.preemption</name>
+    <value><%= @fair_preemption %></value>
+    <description>Whether to use preemption.</description>
+  </property>
+<% if @fair_preemption_cluster_utilization_threshold -%>
+  <property>
+    <name>yarn.scheduler.fair.preemption.cluster-utilization-threshold</name>
+    <value><%= @fair_preemption_cluster_utilization_threshold %></value>
+    <description>The utilization threshold after which preemption kicks in.</description>
+  </property>
+<% end # if @fair_preemption_cluster_utilization_threshold -%>
+<% if @fair_locality_threshold_node -%>
+  <property>
+    <name>yarn.scheduler.fair.locality.threshold.node</name>
+    <value><%= @fair_locality_threshold_node %></value>
+    <description>
+      For applications that request containers on particular nodes, the number of
+      scheduling opportunities since the last container assignment to wait before
+      accepting a placement on another node.
+    </description>
+  </property>
+<% end # if @fair_locality_threshold_node -%>
+<% end # if @fair_scheduler_enabled -%>
 
   <property>
     <name>yarn.nodemanager.localizer.address</name>
