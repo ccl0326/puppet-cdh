@@ -58,6 +58,17 @@
     </description>
   </property>
 <% end # if @fair_locality_threshold_node -%>
+<% if @fair_locality_threshold_rack -%>
+  <property>
+    <name>yarn.scheduler.fair.locality.threshold.rack</name>
+    <value><%= @fair_locality_threshold_rack %></value>
+    <description>
+      For applications that request containers on particular racks, the number of
+      scheduling opportunities since the last container assignment to wait before
+      accepting a placement on another rack.
+    </description>
+  </property>
+<% end # if @fair_locality_threshold_rack -%>
 <% end # if @fair_scheduler_enabled -%>
 
   <property>

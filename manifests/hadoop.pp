@@ -129,6 +129,11 @@
 #                                                    opportunities since the last container
 #                                                    assignment to wait before accepting a
 #                                                    placement on another node.  Default: undef
+#   $fair_locality_threshold_rack                  - For applications that request containers
+#                                                    on particular racks, the number of scheduling
+#                                                    opportunities since the last container
+#                                                    assignment to wait before accepting a
+#                                                    placement on another rack.  Default: undef
 #   $queue_max_apps_default                        - Sets the default running app limit for queues.  Default: 50
 #   $default_fair_share_preemption_timeout         - Sets the fair share preemption timeout (second)
 #                                                    for the root queue.  Default: 30
@@ -198,6 +203,7 @@ class cdh::hadoop(
     $fair_preemption                               = $::cdh::hadoop::defaults::fair_preemption,
     $fair_preemption_cluster_utilization_threshold = $::cdh::hadoop::defaults::fair_preemption_cluster_utilization_threshold,
     $fair_locality_threshold_node                  = $::cdh::hadoop::defaults::fair_locality_threshold_node,
+    $fair_locality_threshold_rack                  = $::cdh::hadoop::defaults::fair_locality_threshold_rack,
     $queue_max_apps_default                        = $::cdh::hadoop::defaults::queue_max_apps_default,
     $default_fair_share_preemption_timeout         = $::cdh::hadoop::defaults::default_fair_share_preemption_timeout,
     $default_fair_share_preemption_threshold       = $::cdh::hadoop::defaults::default_fair_share_preemption_threshold,

@@ -60,6 +60,7 @@ class cdh::hadoop::defaults {
     $fair_preemption                               = false
     $fair_preemption_cluster_utilization_threshold = undef
     $fair_locality_threshold_node                  = undef
+    $fair_locality_threshold_rack                  = undef
     $queue_max_apps_default                        = 50
     $default_fair_share_preemption_timeout         = 30  # second
     $default_fair_share_preemption_threshold       = 0.5
