@@ -5,6 +5,8 @@
 class cdh::hbase::defaults {
   $version = 'installed'
 
+  $hbase_heap_size = undef
+
   $zookeeper_hosts           = undef
   $zookeeper_znode_parent    = '/hbase'
   $zookeeper_session_timeout = undef

@@ -12,6 +12,9 @@
 # [*version*]
 #   hbase package version number. Default: installed
 #
+# [*hbase_heap_size*]
+#   The maximum amount of heap to use, in MB. Default: undef
+#
 # [*zookeeper_hosts*]
 #   Array of ZooKeeper hostname/IP(:port)s. Default: undef (HBase will run
 #   in pseudo-distributed mode)
@@ -69,6 +72,8 @@
 class cdh::hbase(
   $namenode_host,
   $version                              = $::cdh::hbase::defaults::version,
+
+  $hbase_heap_size                      = $::cdh::hbase::defaults::hbase_heap_size,
 
   $zookeeper_hosts                      = $::cdh::hbase::defaults::zookeeper_hosts,
   $zookeeper_znode_parent               = $::cdh::hbase::defaults::zookeeper_znode_parent,
