@@ -64,6 +64,7 @@ class cdh::hadoop::defaults {
     $queue_max_apps_default                        = 50
     $default_fair_share_preemption_timeout         = 30  # second
     $default_fair_share_preemption_threshold       = 0.5
+    $default_queue_scheduling_policy               = 'fair'
 
     $hadoop_heapsize                               = undef
     $yarn_heapsize                                 = undef

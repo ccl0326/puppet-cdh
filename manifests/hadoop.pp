@@ -139,6 +139,7 @@
 #                                                    for the root queue.  Default: 30
 #   $default_fair_share_preemption_threshold       - Sets the fair share preemption threshold
 #                                                    for the root queue.  Default: 0.5
+#   $default_queue_scheduling_policy               - Sets the default scheduling policy for queues.  Default: fair
 #
 #   $hadoop_classpath                              - Add library in HADOOP_CLASSPATH with hadoop-env.sh.
 #   $java_library_path                             - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh.
@@ -207,6 +208,7 @@ class cdh::hadoop(
     $queue_max_apps_default                        = $::cdh::hadoop::defaults::queue_max_apps_default,
     $default_fair_share_preemption_timeout         = $::cdh::hadoop::defaults::default_fair_share_preemption_timeout,
     $default_fair_share_preemption_threshold       = $::cdh::hadoop::defaults::default_fair_share_preemption_threshold,
+    $default_queue_scheduling_policy               = $::cdh::hadoop::defaults::default_queue_scheduling_policy,
 
     $hadoop_heapsize                               = $::cdh::hadoop::defaults::hadoop_heapsize,
     $yarn_heapsize                                 = $::cdh::hadoop::defaults::yarn_heapsize,
