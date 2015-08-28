@@ -13,6 +13,9 @@ IMPALA_STATE_STORE_ARGS=" -log_dir=${IMPALA_LOG_DIR} -state_store_port=${IMPALA_
 # adding -hostname forces impalad to report itself using FQDN.
 IMPALA_SERVER_ARGS=" \
     -hostname=<%= @fqdn %> \
+    -mem_limit=<%= @mem_limit %> \
+    -idle_query_timeout=<%= @idle_query_timeout %> \
+    -idle_session_timeout=<%= @idle_session_timeout %> \
     -log_dir=${IMPALA_LOG_DIR} \
     -catalog_service_host=${IMPALA_CATALOG_SERVICE_HOST} \
     -state_store_port=${IMPALA_STATE_STORE_PORT} \

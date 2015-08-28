@@ -18,6 +18,21 @@
 # [*version*]
 #   Impala package version number. Default: installed
 #
+# [*mem_limit*]
+#   Limit the amount of memory available to Impala. You can specify the memory limit
+#   using absolute notation such as 500m or 2G, or as a percentage of physical memory
+#   such as 60%. Default: 16G
+#
+# [*idle_query_timeout*]
+#   The time, in seconds, that a query may be idle for (i.e. no processing work is
+#   done and no updates are received from the client) before it is cancelled.
+#   If 0, idle queries are never expired. Default: 0
+#
+# [*idle_session_timeout*]
+#   The time, in seconds, that a session may be idle for before it is closed (and
+#   all running queries cancelled) by Impala. If 0, idle sessions are never
+#   expired. Default: 0
+#
 # === Examples
 #
 #  class { 'cdh::impala':
@@ -27,8 +42,11 @@
 #
 class cdh::impala(
   $master_host,
-  $version          = $::cdh::impala::defaults::version,
-  $default_template = 'cdh/impala/impala.default.erb'
+  $version              = $::cdh::impala::defaults::version,
+  $mem_limit            = $::cdh::impala::defaults::mem_limit,
+  $idle_query_timeout   = $::cdh::impala::defaults::idle_query_timeout,
+  $idle_session_timeout = $::cdh::impala::defaults::idle_session_timeout,
+  $default_template     = 'cdh/impala/impala.default.erb'
 ) inherits cdh::impala::defaults {
   Class['cdh::hadoop'] -> Class['cdh::impala']
   Class['cdh::hive'] -> Class['cdh::impala']
