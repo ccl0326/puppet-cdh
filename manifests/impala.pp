@@ -18,6 +18,11 @@
 # [*version*]
 #   Impala package version number. Default: installed
 #
+# [*num_cores*]
+#   If > 0, it sets the number of cores available to Impala. Setting it to 0 means
+#   Impala will use all available cores on the machine according to
+#   /proc/cpuinfo. Default: 0
+#
 # [*mem_limit*]
 #   Limit the amount of memory available to Impala. You can specify the memory limit
 #   using absolute notation such as 500m or 2G, or as a percentage of physical memory
@@ -33,6 +38,9 @@
 #   all running queries cancelled) by Impala. If 0, idle sessions are never
 #   expired. Default: 0
 #
+# [*enable_rm*]
+#   Whether to enable resource management or not. Default: true
+#
 # === Examples
 #
 #  class { 'cdh::impala':
@@ -43,9 +51,11 @@
 class cdh::impala(
   $master_host,
   $version              = $::cdh::impala::defaults::version,
+  $num_cores            = $::cdh::impala::defaults::num_cores,
   $mem_limit            = $::cdh::impala::defaults::mem_limit,
   $idle_query_timeout   = $::cdh::impala::defaults::idle_query_timeout,
   $idle_session_timeout = $::cdh::impala::defaults::idle_session_timeout,
+  $enable_rm            = $::cdh::impala::defaults::enable_rm,
   $default_template     = 'cdh/impala/impala.default.erb'
 ) inherits cdh::impala::defaults {
   Class['cdh::hadoop'] -> Class['cdh::impala']
