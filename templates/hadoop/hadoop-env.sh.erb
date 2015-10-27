@@ -43,3 +43,6 @@ export HADOOP_CLASSPATH=<%= @hadoop_classpath %>:$HADOOP_CLASSPATH
 <% if @java_library_path -%>
 export JAVA_LIBRARY_PATH=<%= @java_library_path %>:$JAVA_LIBRARY_PATH
 <% end -%>
+<% if @ld_library_path -%>
+export LD_LIBRARY_PATH=<%= @ld_library_path %>:$LD_LIBRARY_PATH
+<% end -%>

@@ -141,8 +141,9 @@
 #                                                    for the root queue.  Default: 0.5
 #   $default_queue_scheduling_policy               - Sets the default scheduling policy for queues.  Default: fair
 #
-#   $hadoop_classpath                              - Add library in HADOOP_CLASSPATH with hadoop-env.sh.
-#   $java_library_path                             - Add library in JAVA_LIBRARY_PATH with hadoop-env.sh.
+#   $hadoop_classpath                              - Add addtitional classpath to HADOOP_CLASSPATH which set in hadoop-env.sh.
+#   $java_library_path                             - Add addtitional library path to JAVA_LIBRARY_PATH which set in hadoop-env.sh.
+#   $ld_library_path                               - Add addtitional library path to LD_LIBRARY_PATH which set in hadoop-env.sh.
 #   $lzo_enabled                                   - Set true when you add LZO compress.
 #   $io_compression_codec_lzo_class                - Write LZO class name.            Default: com.hadoop.compression.lzo.LzoCodec
 #   $io_compression_codecs                         - A list of the compression codec classes that can be used for compression/decompression.
@@ -221,6 +222,7 @@ class cdh::hadoop(
 
     $hadoop_classpath                              = $::cdh::hadoop::defaults::hadoop_classpath,
     $java_library_path                             = $::cdh::hadoop::defaults::java_library_path,
+    $ld_library_path                               = $::cdh::hadoop::defaults::ld_library_path,
     $lzo_enabled                                   = $::cdh::hadoop::defaults::lzo_enabled,
     $io_compression_codec_lzo_class                = $::cdh::hadoop::defaults::io_compression_codec_lzo_class,
     $io_compression_codecs                         = $::cdh::hadoop::defaults::io_compression_codecs,
