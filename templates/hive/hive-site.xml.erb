@@ -83,7 +83,7 @@ if (@metastore_host == @fqdn)
   </property>
 <% end -%>
 
-<% if @zookeeper_port and !@zookeeper_port.empty? -%>
+<% if @zookeeper_port -%>
   <property>
     <name>hive.zookeeper.client.port</name>
     <description>Zookeeper port used by Hive's Table Lock Manager</description>

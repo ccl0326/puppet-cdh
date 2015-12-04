@@ -43,7 +43,7 @@
     <value><%= @zookeeper_hosts.sort.join(',') %></value>
   </property>
 <% end -%>
-<% if @zookeeper_port and !@zookeeper_port.empty? -%>
+<% if @zookeeper_port -%>
   <property>
     <name>hbase.zookeeper.property.clientPort</name>
     <value><%= @zookeeper_port %></value>
