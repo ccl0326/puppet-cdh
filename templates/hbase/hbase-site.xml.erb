@@ -43,6 +43,12 @@
     <value><%= @zookeeper_hosts.sort.join(',') %></value>
   </property>
 <% end -%>
+<% if @zookeeper_port and !@zookeeper_port.empty? -%>
+  <property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value><%= @zookeeper_port %></value>
+  </property>
+<% end -%>
 <% if @zookeeper_session_timeout -%>
   <property>
     <name>zookeeper.session.timeout</name>

@@ -7,10 +7,10 @@
 #
 # == Parameters
 # $metastore_host                - fqdn of the metastore host
-# $zookeeper_hosts               - Array of ZooKeeper hostname/IP(:port)s.
+# $zookeeper_hosts               - Array of ZooKeeper hostname/IPs.
 #                                  Default: undef (ZooKeeper lock management
 #                                  will not be used).
-#
+# $zookeeper_port                - zookeeper port Default: 2181.
 # $jdbc_database                 - Metastore JDBC database name.
 #                                  Default: 'hive_metastore'
 # $jdbc_username                 - Metastore JDBC username.  Default: hive
@@ -52,6 +52,7 @@
 class cdh::hive(
     $metastore_host,
     $zookeeper_hosts             = $cdh::hive::defaults::zookeeper_hosts,
+    $zookeeper_port              = $cdh::hive::defaults::zookeeper_port,
 
     $jdbc_database               = $cdh::hive::defaults::jdbc_database,
     $jdbc_username               = $cdh::hive::defaults::jdbc_username,

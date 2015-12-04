@@ -8,6 +8,7 @@ class cdh::hbase::defaults {
   $hbase_heap_size = undef
 
   $zookeeper_hosts           = undef
+  $zookeeper_port            = undef
   $zookeeper_znode_parent    = '/hbase'
   $zookeeper_session_timeout = undef
 

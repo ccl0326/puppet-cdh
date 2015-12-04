@@ -3,6 +3,7 @@
 #
 class cdh::hive::defaults {
     $zookeeper_hosts             = undef
+    $zookeeper_port              = undef
 
     $jdbc_driver                 = 'com.mysql.jdbc.Driver'
     $jdbc_protocol               = 'mysql'

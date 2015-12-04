@@ -19,6 +19,10 @@
 #   Array of ZooKeeper hostname/IP(:port)s. Default: undef (HBase will run
 #   in pseudo-distributed mode)
 #
+# [*zookeeper_port*]
+#   Array of ZooKeeper port. Default: undef (HBase will run
+#   in pseudo-distributed mode)
+#
 # [*zookeeper_znode_parent*]
 #   Root ZNode for HBase in ZooKeeper. Default: /hbase
 #
@@ -76,6 +80,7 @@ class cdh::hbase(
   $hbase_heap_size                      = $::cdh::hbase::defaults::hbase_heap_size,
 
   $zookeeper_hosts                      = $::cdh::hbase::defaults::zookeeper_hosts,
+  $zookeeper_port                       = $::cdh::hbase::defaults::zookeeper_port,
   $zookeeper_znode_parent               = $::cdh::hbase::defaults::zookeeper_znode_parent,
   $zookeeper_session_timeout            = $::cdh::hbase::defaults::zookeeper_session_timeout,
 
