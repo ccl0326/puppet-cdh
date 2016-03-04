@@ -382,7 +382,8 @@ class { 'cdh::hbase':
     'zk1.domain.org',
     'zk2.domain.org',
     'zk3.domain.org'
-  ]
+  ],
+  hbase_backup_master_hosts      => 'backup-namenode1.domain.org,backup-namenode2.domain.org'
 }
 class { 'cdh::hbase::master':
   version => $hbase_version

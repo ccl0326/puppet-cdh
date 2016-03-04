@@ -91,11 +91,14 @@ class cdh::hbase(
   $hbase_client_scanner_timeout_period  = $::cdh::hbase::defaults::hbase_client_scanner_timeout_period,
   $hbase_client_scanner_max_result_size = $::cdh::hbase::defaults::hbase_client_scanner_max_result_size,
 
+  $hbase_backup_master_hosts            = $::cdh::hbase::defaults::hbase_backup_master_hosts,
+
   $hbase_site_template                  = $::cdh::hbase::defaults::hbase_site_template,
   $hadoop_metrics2_hbase_template       = $::cdh::hbase::defaults::hadoop_metrics2_hbase_template,
   $hbase_env_template                   = $::cdh::hbase::defaults::hbase_env_template,
   $hbase_policy_template                = $::cdh::hbase::defaults::hbase_policy_template,
-  $log4j_template                       = $::cdh::hbase::defaults::log4j_template
+  $log4j_template                       = $::cdh::hbase::defaults::log4j_template,
+  $backup_masters_template              = $::cdh::hbase::defaults::backup_masters_template
 ) inherits cdh::hbase::defaults {
   Class['cdh::hadoop'] -> Class['cdh::hbase']
 
@@ -143,6 +146,12 @@ class cdh::hbase(
     content => template($log4j_template),
     owner   => 'hbase',
     group   => 'hbase',
+    require => [Package['hbase'], File[$config_directory]]
+  }
+  file { "${config_directory}/backup-masters":
+    content => template($backup_masters_template),
+    owner => 'hbase',
+    group => 'hbase',
     require => [Package['hbase'], File[$config_directory]]
   }
 }
